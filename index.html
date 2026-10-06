@@ -6,11 +6,12 @@
 <title>SAMI WAREHOUSE — Personal Command Center</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230b0f17'/><text x='50' y='70' font-size='52' font-weight='600' text-anchor='middle' font-family='Inter,Arial' fill='%23f59e0b'>S</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23d97706' stroke='%23ffffff' stroke-width='6'/><text x='50' y='72' font-size='56' font-weight='900' text-anchor='middle' font-family='Arial Black' fill='%23000'>S</text></svg>">
 </head>
 <body>
+<div class="grain-overlay"></div>
 
 <!-- ============ HEADER ============ -->
 <header class="hero-header">
@@ -19,13 +20,13 @@
       <div class="logo-mark">SW</div>
       <div class="logo-text">
         <h1 class="logo-title">SAMI<br>WAREHOUSE</h1>
-        <div class="logo-sub">Personal Command Center v1.1</div>
+        <div class="logo-sub">Personal Command Center v1.2</div>
       </div>
     </div>
     <div class="header-meta">
       <div class="badge badge-accent" id="focus-badge">
         <span class="badge-dot"></span>
-        Zero-distraction focus mode
+        ZERO-DISTRACTION FOCUS MODE
       </div>
       <div class="badge">OPERATOR: SAMI</div>
       <div class="badge">
@@ -51,8 +52,8 @@
   <!-- DASHBOARD -->
   <section class="tab-panel active" id="tab-dashboard">
     <div class="panel-header">
-      <h2 class="section-title">Dashboard</h2>
-      <div class="section-sub">Live status of all subsystems</div>
+      <h2 class="section-title">DASHBOARD</h2>
+      <div class="section-sub">// LIVE STATUS OF ALL SUBSYSTEMS</div>
     </div>
 
     <div class="grid-4">
@@ -81,38 +82,38 @@
     <div class="grid-2">
       <div class="content-card">
         <div class="card-head">
-          <div class="card-title">Queued now</div>
+          <div class="card-title">QUEUED NOW</div>
           <div class="card-actions">
-            <button class="mini-btn" data-jump="videos">+ Add</button>
+            <button class="mini-btn" data-jump="videos">+ ADD</button>
           </div>
         </div>
         <div id="dash-queued-list" class="mini-list">
-          <div class="empty-state">Queue empty. Add a YouTube URL.</div>
+          <div class="empty-state">// queue empty. add a youtube url.</div>
         </div>
       </div>
 
       <div class="content-card">
         <div class="card-head">
-          <div class="card-title">Today's habits</div>
+          <div class="card-title">TODAY'S HABITS</div>
           <div class="card-actions">
-            <button class="mini-btn" data-jump="habits">Toggle</button>
+            <button class="mini-btn" data-jump="habits">TOGGLE</button>
           </div>
         </div>
         <div id="dash-habit-list" class="mini-list">
-          <div class="empty-state">Habits not tracked yet.</div>
+          <div class="empty-state">// habits not tracked yet.</div>
         </div>
       </div>
     </div>
 
     <div class="content-card">
       <div class="card-head">
-        <div class="card-title">Hermes report</div>
+        <div class="card-title">HERMES REPORT</div>
         <div class="card-actions">
-          <button class="mini-btn" data-jump="analytics">View</button>
+          <button class="mini-btn" data-jump="analytics">VIEW</button>
         </div>
       </div>
       <div id="dash-hermes-report" class="report-box">
-        <div class="empty-state">No report generated yet. Run the nightly audit in Analytics.</div>
+        <div class="empty-state">// no report generated yet. run nightly audit in analytics.</div>
       </div>
     </div>
   </section>
@@ -120,53 +121,53 @@
   <!-- VIDEOS -->
   <section class="tab-panel" id="tab-videos">
     <div class="panel-header">
-      <h2 class="section-title">Video Queue</h2>
-      <div class="section-sub">YouTube URL → Queue → Watch → Mark done</div>
+      <h2 class="section-title">VIDEO QUEUE</h2>
+      <div class="section-sub">// YOUTUBE URL &rarr; QUEUE &rarr; WATCH &rarr; MARK DONE</div>
     </div>
 
     <div class="content-card">
       <form id="video-form" class="input-group">
         <input type="text" id="video-url" placeholder="https://youtube.com/watch?v=..." required>
-        <button type="submit" class="btn btn-primary">+ Add to queue</button>
+        <button type="submit" class="btn btn-primary">+ ADD TO QUEUE</button>
       </form>
     </div>
 
     <div class="grid-2">
       <div class="content-card">
         <div class="card-head">
-          <div class="card-title">Current video</div>
+          <div class="card-title">CURRENT VIDEO</div>
         </div>
         <div id="video-player" class="video-player">
-          <div class="empty-state">Select a queued video to watch.</div>
+          <div class="empty-state">// select a queued video to watch.</div>
         </div>
         <div id="video-controls" class="video-controls">
-          <button class="btn btn-primary" id="mark-complete-btn" disabled>&#10003; Mark complete</button>
-          <button class="btn btn-danger" id="delete-current-btn" disabled>&#10007; Delete</button>
+          <button class="btn btn-primary" id="mark-complete-btn" disabled>&#10003; MARK COMPLETE</button>
+          <button class="btn btn-danger" id="delete-current-btn" disabled>&#10007; DELETE</button>
         </div>
       </div>
 
       <div class="content-card">
         <div class="card-head">
-          <div class="card-title">Queue</div>
+          <div class="card-title">QUEUE</div>
           <div class="card-actions">
             <span class="count-badge" id="queue-count">0</span>
           </div>
         </div>
         <div id="video-queue" class="queue-list">
-          <div class="empty-state">Queue is empty. Add a YouTube URL above.</div>
+          <div class="empty-state">// queue is empty. add a youtube url above.</div>
         </div>
       </div>
     </div>
 
     <div class="content-card">
       <div class="card-head">
-        <div class="card-title">Completed archive</div>
+        <div class="card-title">COMPLETED ARCHIVE</div>
         <div class="card-actions">
           <button class="mini-btn" id="clear-archive">Clear</button>
         </div>
       </div>
       <div id="video-archive" class="queue-list">
-        <div class="empty-state">No completed videos yet.</div>
+        <div class="empty-state">// no completed videos yet.</div>
       </div>
     </div>
   </section>
@@ -174,34 +175,34 @@
   <!-- HABITS -->
   <section class="tab-panel" id="tab-habits">
     <div class="panel-header">
-      <h2 class="section-title">Habits</h2>
-      <div class="section-sub">Meditation · Calisthenics · Sleep</div>
+      <h2 class="section-title">HABITS</h2>
+      <div class="section-sub">// MEDITATION &middot; CALISTHENICS &middot; SLEEP</div>
     </div>
 
     <div class="grid-3">
       <div class="habit-card" data-habit="meditation">
         <div class="habit-icon">M</div>
-        <div class="habit-name">Meditation</div>
-        <div class="habit-status" id="habit-status-meditation">Not done</div>
-        <button class="btn btn-ghost" data-toggle="meditation">Toggle</button>
+        <div class="habit-name">MEDITATION</div>
+        <div class="habit-status" id="habit-status-meditation">NOT DONE</div>
+        <button class="btn btn-ghost" data-toggle="meditation">TOGGLE</button>
       </div>
       <div class="habit-card" data-habit="calisthenics">
         <div class="habit-icon">C</div>
-        <div class="habit-name">Calisthenics</div>
-        <div class="habit-status" id="habit-status-calisthenics">Not done</div>
-        <button class="btn btn-ghost" data-toggle="calisthenics">Toggle</button>
+        <div class="habit-name">CALISTHENICS</div>
+        <div class="habit-status" id="habit-status-calisthenics">NOT DONE</div>
+        <button class="btn btn-ghost" data-toggle="calisthenics">TOGGLE</button>
       </div>
       <div class="habit-card" data-habit="sleep">
         <div class="habit-icon">S</div>
-        <div class="habit-name">Sleep</div>
-        <div class="habit-status" id="habit-status-sleep">Not done</div>
-        <button class="btn btn-ghost" data-toggle="sleep">Toggle</button>
+        <div class="habit-name">SLEEP</div>
+        <div class="habit-status" id="habit-status-sleep">NOT DONE</div>
+        <button class="btn btn-ghost" data-toggle="sleep">TOGGLE</button>
       </div>
     </div>
 
     <div class="content-card">
       <div class="card-head">
-        <div class="card-title">Habit score</div>
+        <div class="card-title">HABIT SCORE</div>
       </div>
       <div class="score-display">
         <div class="score-big" id="habit-score-big">0</div>
@@ -214,7 +215,7 @@
 
     <div class="content-card">
       <div class="card-head">
-        <div class="card-title">7-day history</div>
+        <div class="card-title">7-DAY HISTORY</div>
       </div>
       <div id="habit-history" class="history-grid"></div>
     </div>
@@ -223,16 +224,16 @@
   <!-- NEWS -->
   <section class="tab-panel" id="tab-news">
     <div class="panel-header">
-      <h2 class="section-title">News Digest</h2>
-      <div class="section-sub">Top AI breakthroughs & scientific discoveries</div>
+      <h2 class="section-title">NEWS DIGEST</h2>
+      <div class="section-sub">// TOP AI BREAKTHROUGHS &amp; SCIENTIFIC DISCOVERIES</div>
     </div>
 
     <div class="content-card">
       <div class="card-head">
-        <div class="card-title">Cycle controls</div>
+        <div class="card-title">CYCLE CONTROLS</div>
         <div class="card-actions">
-          <button class="btn btn-primary" id="run-audit-btn">Run nightly audit</button>
-          <button class="btn btn-danger" id="clear-news">Clear cycle</button>
+          <button class="btn btn-primary" id="run-audit-btn">RUN NIGHTLY AUDIT</button>
+          <button class="btn btn-danger" id="clear-news">CLEAR CYCLE</button>
         </div>
       </div>
       <div class="audit-meta">
@@ -243,15 +244,15 @@
     </div>
 
     <div id="news-list" class="news-list">
-      <div class="empty-state">No news items yet. Run the nightly audit.</div>
+      <div class="empty-state">// no news items yet. run the nightly audit.</div>
     </div>
   </section>
 
   <!-- ANALYTICS -->
   <section class="tab-panel" id="tab-analytics">
     <div class="panel-header">
-      <h2 class="section-title">Analytics</h2>
-      <div class="section-sub">Velocity & Hermes reports</div>
+      <h2 class="section-title">ANALYTICS</h2>
+      <div class="section-sub">// VELOCITY &amp; HERMES REPORTS</div>
     </div>
 
     <div class="grid-4">
@@ -279,21 +280,21 @@
 
     <div class="content-card">
       <div class="card-head">
-        <div class="card-title">Velocity — last 7 days</div>
+        <div class="card-title">VELOCITY GRAPH — LAST 7 DAYS</div>
       </div>
       <div id="velocity-graph" class="velocity-graph"></div>
     </div>
 
     <div class="content-card">
       <div class="card-head">
-        <div class="card-title">Hermes reports</div>
+        <div class="card-title">HERMES REPORTS</div>
         <div class="card-actions">
-          <button class="btn btn-primary" id="gen-report-btn">Generate report</button>
-          <button class="btn btn-danger" id="clear-reports">Clear all</button>
+          <button class="btn btn-primary" id="gen-report-btn">GENERATE REPORT</button>
+          <button class="btn btn-danger" id="clear-reports">CLEAR ALL</button>
         </div>
       </div>
       <div id="reports-list" class="reports-list">
-        <div class="empty-state">No reports yet.</div>
+        <div class="empty-state">// no reports yet.</div>
       </div>
     </div>
   </section>
@@ -306,7 +307,7 @@
     <div class="footer-left">
       <span class="footer-brand">SAMI WAREHOUSE</span>
       <span class="footer-dot">&middot;</span>
-      <span>v1.0</span>
+      <span>v1.2</span>
       <span class="footer-dot">&middot;</span>
       <span>LOCAL STORAGE ENGINE</span>
     </div>
