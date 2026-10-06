@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23d97706' stroke='%23ffffff' stroke-width='6'/><text x='50' y='72' font-size='56' font-weight='900' text-anchor='middle' font-family='Arial Black' fill='%23000'>S</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FACC15' stroke='%230f172a' stroke-width='8'/><text x='50' y='72' font-size='56' font-weight='900' text-anchor='middle' font-family='Arial Black' fill='%23000'>S</text></svg>">
 </head>
 <body>
 <div class="grain-overlay"></div>
@@ -20,7 +20,7 @@
       <div class="logo-mark">SW</div>
       <div class="logo-text">
         <h1 class="logo-title">SAMI<br>WAREHOUSE</h1>
-        <div class="logo-sub">Personal Command Center v1.2</div>
+        <div class="logo-sub">Personal Command Center v1.3</div>
       </div>
     </div>
     <div class="header-meta">
@@ -52,27 +52,27 @@
   <!-- DASHBOARD -->
   <section class="tab-panel active" id="tab-dashboard">
     <div class="panel-header">
-      <h2 class="section-title">DASHBOARD</h2>
+      <h2 class="section-title section-title-dashboard">DASHBOARD</h2>
       <div class="section-sub">// LIVE STATUS OF ALL SUBSYSTEMS</div>
     </div>
 
     <div class="grid-4">
-      <div class="stat-card">
+      <div class="stat-card stat-card-video">
         <div class="stat-label">QUEUED VIDEOS</div>
         <div class="stat-value" id="dash-videos-queued">0</div>
         <div class="stat-foot">total: <span id="dash-videos-total">0</span></div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card stat-card-habit">
         <div class="stat-label">TODAY'S HABIT SCORE</div>
         <div class="stat-value" id="dash-habit-score">0/3</div>
         <div class="stat-foot">med · calisth · sleep</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card stat-card-news">
         <div class="stat-label">NEWS ITEMS</div>
         <div class="stat-value" id="dash-news-count">0</div>
         <div class="stat-foot">this cycle</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card stat-card-velocity">
         <div class="stat-label">VELOCITY</div>
         <div class="stat-value" id="dash-velocity">0</div>
         <div class="stat-foot">units/day</div>
@@ -121,19 +121,19 @@
   <!-- VIDEOS -->
   <section class="tab-panel" id="tab-videos">
     <div class="panel-header">
-      <h2 class="section-title">VIDEO QUEUE</h2>
+      <h2 class="section-title section-title-video">VIDEO QUEUE</h2>
       <div class="section-sub">// YOUTUBE URL &rarr; QUEUE &rarr; WATCH &rarr; MARK DONE</div>
     </div>
 
-    <div class="content-card">
+    <div class="content-card card-video">
       <form id="video-form" class="input-group">
         <input type="text" id="video-url" placeholder="https://youtube.com/watch?v=..." required>
-        <button type="submit" class="btn btn-primary">+ ADD TO QUEUE</button>
+        <button type="submit" class="btn btn-primary-video">+ ADD TO QUEUE</button>
       </form>
     </div>
 
     <div class="grid-2">
-      <div class="content-card">
+      <div class="content-card card-video">
         <div class="card-head">
           <div class="card-title">CURRENT VIDEO</div>
         </div>
@@ -141,12 +141,12 @@
           <div class="empty-state">// select a queued video to watch.</div>
         </div>
         <div id="video-controls" class="video-controls">
-          <button class="btn btn-primary" id="mark-complete-btn" disabled>&#10003; MARK COMPLETE</button>
+          <button class="btn btn-primary-video" id="mark-complete-btn" disabled>&#10003; MARK COMPLETE</button>
           <button class="btn btn-danger" id="delete-current-btn" disabled>&#10007; DELETE</button>
         </div>
       </div>
 
-      <div class="content-card">
+      <div class="content-card card-video">
         <div class="card-head">
           <div class="card-title">QUEUE</div>
           <div class="card-actions">
@@ -159,7 +159,7 @@
       </div>
     </div>
 
-    <div class="content-card">
+    <div class="content-card card-video">
       <div class="card-head">
         <div class="card-title">COMPLETED ARCHIVE</div>
         <div class="card-actions">
@@ -175,7 +175,7 @@
   <!-- HABITS -->
   <section class="tab-panel" id="tab-habits">
     <div class="panel-header">
-      <h2 class="section-title">HABITS</h2>
+      <h2 class="section-title section-title-habits">HABITS</h2>
       <div class="section-sub">// MEDITATION &middot; CALISTHENICS &middot; SLEEP</div>
     </div>
 
@@ -184,23 +184,23 @@
         <div class="habit-icon">M</div>
         <div class="habit-name">MEDITATION</div>
         <div class="habit-status" id="habit-status-meditation">NOT DONE</div>
-        <button class="btn btn-ghost" data-toggle="meditation">TOGGLE</button>
+        <button class="btn btn-primary-habit" data-toggle="meditation">TOGGLE</button>
       </div>
       <div class="habit-card" data-habit="calisthenics">
         <div class="habit-icon">C</div>
         <div class="habit-name">CALISTHENICS</div>
         <div class="habit-status" id="habit-status-calisthenics">NOT DONE</div>
-        <button class="btn btn-ghost" data-toggle="calisthenics">TOGGLE</button>
+        <button class="btn btn-primary-habit" data-toggle="calisthenics">TOGGLE</button>
       </div>
       <div class="habit-card" data-habit="sleep">
         <div class="habit-icon">S</div>
         <div class="habit-name">SLEEP</div>
         <div class="habit-status" id="habit-status-sleep">NOT DONE</div>
-        <button class="btn btn-ghost" data-toggle="sleep">TOGGLE</button>
+        <button class="btn btn-primary-habit" data-toggle="sleep">TOGGLE</button>
       </div>
     </div>
 
-    <div class="content-card">
+    <div class="content-card card-habit">
       <div class="card-head">
         <div class="card-title">HABIT SCORE</div>
       </div>
@@ -213,7 +213,7 @@
       </div>
     </div>
 
-    <div class="content-card">
+    <div class="content-card card-habit">
       <div class="card-head">
         <div class="card-title">7-DAY HISTORY</div>
       </div>
@@ -224,15 +224,15 @@
   <!-- NEWS -->
   <section class="tab-panel" id="tab-news">
     <div class="panel-header">
-      <h2 class="section-title">NEWS DIGEST</h2>
+      <h2 class="section-title section-title-news">NEWS DIGEST</h2>
       <div class="section-sub">// TOP AI BREAKTHROUGHS &amp; SCIENTIFIC DISCOVERIES</div>
     </div>
 
-    <div class="content-card">
+    <div class="content-card card-news">
       <div class="card-head">
         <div class="card-title">CYCLE CONTROLS</div>
         <div class="card-actions">
-          <button class="btn btn-primary" id="run-audit-btn">RUN NIGHTLY AUDIT</button>
+          <button class="btn btn-primary-news" id="run-audit-btn">RUN NIGHTLY AUDIT</button>
           <button class="btn btn-danger" id="clear-news">CLEAR CYCLE</button>
         </div>
       </div>
@@ -251,45 +251,45 @@
   <!-- ANALYTICS -->
   <section class="tab-panel" id="tab-analytics">
     <div class="panel-header">
-      <h2 class="section-title">ANALYTICS</h2>
+      <h2 class="section-title section-title-analytics">ANALYTICS</h2>
       <div class="section-sub">// VELOCITY &amp; HERMES REPORTS</div>
     </div>
 
     <div class="grid-4">
-      <div class="stat-card">
+      <div class="stat-card stat-card-video">
         <div class="stat-label">TASKS TODAY</div>
         <div class="stat-value" id="ana-tasks-today">0</div>
         <div class="stat-foot">completed</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card stat-card-habit">
         <div class="stat-label">7-DAY AVG</div>
         <div class="stat-value" id="ana-tasks-7day">0</div>
         <div class="stat-foot">per day</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card stat-card-velocity">
         <div class="stat-label">VELOCITY SCORE</div>
         <div class="stat-value" id="ana-velocity">0</div>
         <div class="stat-foot">weighted</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card stat-card-news">
         <div class="stat-label">STREAK</div>
         <div class="stat-value" id="ana-streak">0</div>
         <div class="stat-foot">days active</div>
       </div>
     </div>
 
-    <div class="content-card">
+    <div class="content-card card-analytics">
       <div class="card-head">
         <div class="card-title">VELOCITY GRAPH — LAST 7 DAYS</div>
       </div>
       <div id="velocity-graph" class="velocity-graph"></div>
     </div>
 
-    <div class="content-card">
+    <div class="content-card card-analytics">
       <div class="card-head">
         <div class="card-title">HERMES REPORTS</div>
         <div class="card-actions">
-          <button class="btn btn-primary" id="gen-report-btn">GENERATE REPORT</button>
+          <button class="btn btn-primary-analytics" id="gen-report-btn">GENERATE REPORT</button>
           <button class="btn btn-danger" id="clear-reports">CLEAR ALL</button>
         </div>
       </div>
@@ -307,7 +307,7 @@
     <div class="footer-left">
       <span class="footer-brand">SAMI WAREHOUSE</span>
       <span class="footer-dot">&middot;</span>
-      <span>v1.2</span>
+      <span>v1.3</span>
       <span class="footer-dot">&middot;</span>
       <span>LOCAL STORAGE ENGINE</span>
     </div>
