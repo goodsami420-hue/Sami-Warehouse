@@ -138,6 +138,17 @@ html, body {
 .badge-yellow { background: var(--yellow); color: var(--border); }
 .badge-cyan { background: var(--cyan); color: var(--border); }
 .badge-green { background: var(--green); color: var(--border); }
+.badge-orange { background: var(--orange); color: var(--border); animation: pulseFocus 2s ease-in-out infinite; }
+
+@keyframes pulseFocus {
+  0%, 100% { box-shadow: 2px 2px 0px var(--border); }
+  50% { box-shadow: 4px 4px 0px var(--border), 0 0 0 3px rgba(251,146,60,0.35); }
+}
+
+.focus-icon {
+  color: var(--border);
+  animation: pulseFocus 2s ease-in-out infinite;
+}
 
 .live-dot {
   width: 8px;
