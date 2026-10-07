@@ -9,54 +9,43 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FACC15' stroke='%230f172a' stroke-width='8'/><text x='50' y='72' font-size='56' font-weight='900' text-anchor='middle' font-family='Arial Black' fill='%23000'>S</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body>
 <div class="grain-overlay"></div>
-
-<!-- ============ HEADER ============ -->
 <header class="hero-header">
   <div class="header-inner">
     <div class="logo-block">
       <div class="logo-mark">SW</div>
       <div class="logo-text">
         <h1 class="logo-title">SAMI<br>WAREHOUSE</h1>
-        <div class="logo-sub">Personal Command Center v1.4</div>
+        <div class="logo-sub">Personal Command Center v1.5</div>
       </div>
     </div>
     <div class="header-meta">
-      <div class="badge badge-accent" id="focus-badge">
-        <span class="badge-dot"></span>
-        ZERO-DISTRACTION FOCUS MODE
-      </div>
+      <div class="badge badge-accent" id="focus-badge"><span class="badge-dot"></span>ZERO-DISTRACTION FOCUS MODE</div>
       <div class="badge">OPERATOR: SAMI</div>
-      <div class="badge">
-        <span id="clock">--:--:--</span>
-      </div>
+      <div class="badge"><span id="clock">--:--:--</span></div>
       <div class="badge" id="date-badge">— — —</div>
     </div>
   </div>
 </header>
-
-<!-- ============ NAV ============ -->
 <nav class="main-nav">
   <button class="nav-btn active" data-tab="dashboard"><span class="nav-num">01</span> DASHBOARD</button>
-  <button class="nav-btn" data-tab="videos"><span class="nav-num">02</span> VIDEO QUEUE</button>
-  <button class="nav-btn" data-tab="habits"><span class="nav-num">03</span> HABITS</button>
-  <button class="nav-btn" data-tab="news"><span class="nav-num">04</span> NEWS</button>
-  <button class="nav-btn" data-tab="analytics"><span class="nav-num">05</span> ANALYTICS</button>
+  <button class="nav-btn" data-tab="study-log"><span class="nav-num">02</span> STUDY LOG</button>
+  <button class="nav-btn" data-tab="physical-log"><span class="nav-num">03</span> PHYSICAL LOG</button>
+  <button class="nav-btn" data-tab="discipline-log"><span class="nav-num">04</span> DISCIPLINE LOG</button>
+  <button class="nav-btn" data-tab="videos"><span class="nav-num">05</span> VIDEO QUEUE</button>
+  <button class="nav-btn" data-tab="habits"><span class="nav-num">06</span> HABITS</button>
+  <button class="nav-btn" data-tab="news"><span class="nav-num">07</span> NEWS</button>
+  <button class="nav-btn" data-tab="analytics"><span class="nav-num">08</span> ANALYTICS</button>
 </nav>
-
-<!-- ============ MAIN ============ -->
 <main class="main-content">
-
-  <!-- DASHBOARD -->
   <section class="tab-panel active" id="tab-dashboard">
     <div class="panel-header">
       <h2 class="section-title section-title-dashboard">DASHBOARD</h2>
-      <div class="section-sub">// TONIGHT'S MISSION CONTROL</div>
+      <div class="section-sub">// LIVE MOMENTUM & TREND CONTROL</div>
     </div>
-
-    <!-- MOTIVATIONAL QUOTE BANNER -->
     <div class="quote-banner" id="quote-banner">
       <div class="quote-content">
         <div class="quote-icon">&#9733;</div>
@@ -67,314 +56,107 @@
       </div>
       <button class="btn btn-ghost quote-next-btn" id="quote-next-btn">NEXT &#8594;</button>
     </div>
-
-    <!-- 3 PROGRESS CARDS -->
-    <div class="progress-grid">
-      <!-- STUDY PROGRESS CARD -->
-      <div class="progress-card progress-card-study">
-        <div class="progress-header">
-          <div class="progress-icon">&#9776;</div>
-          <div class="progress-title">STUDY PROGRESS</div>
+    <div class="chart-grid">
+      <div class="chart-card chart-card-study">
+        <div class="card-head"><div class="card-title card-title-study">STUDY MOMENTUM</div><div class="chart-status" id="study-momentum-status">FLAT</div></div>
+        <div class="chart-summary">
+          <div class="chart-metric"><span class="metric-label">TODAY</span><span class="metric-value" id="study-momentum-today">0%</span></div>
+          <div class="chart-metric"><span class="metric-label">TREND</span><span class="metric-value" id="study-momentum-trend">0</span></div>
         </div>
-        <div class="progress-body">
-          <div class="progress-percent" id="study-percent">0%</div>
-          <div class="progress-status" id="study-status">NEEDS FOCUS</div>
-          <div class="progress-bar-container">
-            <div class="progress-bar-fill" id="study-bar" style="width:0%"></div>
-          </div>
-          <div class="progress-details" id="study-details">0 / 0 tasks</div>
-        </div>
+        <div class="chart-container"><canvas id="study-momentum-chart"></canvas></div>
       </div>
-
-      <!-- PHYSICAL PROGRESS CARD -->
-      <div class="progress-card progress-card-physical">
-        <div class="progress-header">
-          <div class="progress-icon">&#9824;</div>
-          <div class="progress-title">PHYSICAL PROGRESS</div>
+      <div class="chart-card chart-card-physical">
+        <div class="card-head"><div class="card-title card-title-physical">PHYSICAL PERFORMANCE</div><div class="chart-status" id="physical-momentum-status">FLAT</div></div>
+        <div class="chart-summary">
+          <div class="chart-metric"><span class="metric-label">TODAY</span><span class="metric-value" id="physical-momentum-today">0%</span></div>
+          <div class="chart-metric"><span class="metric-label">TREND</span><span class="metric-value" id="physical-momentum-trend">0</span></div>
         </div>
-        <div class="progress-body">
-          <div class="progress-percent" id="physical-percent">0%</div>
-          <div class="progress-status" id="physical-status">NEEDS FOCUS</div>
-          <div class="progress-bar-container">
-            <div class="progress-bar-fill" id="physical-bar" style="width:0%"></div>
-          </div>
-          <div class="progress-details" id="physical-details">0 / 0 workouts</div>
-        </div>
+        <div class="chart-container"><canvas id="physical-momentum-chart"></canvas></div>
       </div>
-
-      <!-- DISCIPLINE PROGRESS CARD -->
-      <div class="progress-card progress-card-discipline">
-        <div class="progress-header">
-          <div class="progress-icon">&#9830;</div>
-          <div class="progress-title">DISCIPLINE PROGRESS</div>
+      <div class="chart-card chart-card-discipline">
+        <div class="card-head"><div class="card-title card-title-discipline">DISCIPLINE CONSISTENCY</div><div class="chart-status" id="discipline-momentum-status">FLAT</div></div>
+        <div class="chart-summary">
+          <div class="chart-metric"><span class="metric-label">TODAY</span><span class="metric-value" id="discipline-momentum-today">0%</span></div>
+          <div class="chart-metric"><span class="metric-label">TREND</span><span class="metric-value" id="discipline-momentum-trend">0</span></div>
         </div>
-        <div class="progress-body">
-          <div class="progress-percent" id="discipline-percent">0%</div>
-          <div class="progress-status" id="discipline-status">NEEDS FOCUS</div>
-          <div class="progress-bar-container">
-            <div class="progress-bar-fill" id="discipline-bar" style="width:0%"></div>
-          </div>
-          <div class="progress-details" id="discipline-details">0 / 0 habits</div>
-        </div>
+        <div class="chart-container"><canvas id="discipline-momentum-chart"></canvas></div>
       </div>
     </div>
-
-    <!-- DAILY ACTION TRACKERS -->
-    <div class="tracker-grid">
-      <!-- STUDY TRACKER -->
-      <div class="tracker-card tracker-card-study">
-        <div class="card-head">
-          <div class="card-title card-title-study">STUDY TRACKER</div>
-          <div class="card-actions">
-            <button class="btn btn-primary-study" id="add-study-btn">+ ADD TASK</button>
-          </div>
-        </div>
-        <div class="tracker-input-container">
-          <input type="text" id="study-task-input" placeholder="e.g., Physics Chapter 4 CQ">
-        </div>
-        <div class="tracker-list" id="study-task-list">
-          <div class="empty-state">// add study tasks to track progress.</div>
-        </div>
-      </div>
-
-      <!-- PHYSICAL TRACKER -->
-      <div class="tracker-card tracker-card-physical">
-        <div class="card-head">
-          <div class="card-title card-title-physical">PHYSICAL TRACKER</div>
-          <div class="card-actions">
-            <button class="btn btn-primary-physical" id="add-physical-btn">+ ADD WORKOUT</button>
-          </div>
-        </div>
-        <div class="tracker-input-container">
-          <input type="text" id="physical-workout-input" placeholder="e.g., Pushups, Planks, Calisthenics">
-        </div>
-        <div class="tracker-list" id="physical-workout-list">
-          <div class="empty-state">// add workouts to track progress.</div>
-        </div>
-      </div>
-
-      <!-- DISCIPLINE TRACKER -->
-      <div class="tracker-card tracker-card-discipline">
-        <div class="card-head">
-          <div class="card-title card-title-discipline">DISCIPLINE TRACKER</div>
-          <div class="card-actions">
-            <button class="btn btn-primary-discipline" id="add-discipline-btn">+ ADD HABIT</button>
-          </div>
-        </div>
-        <div class="tracker-input-container">
-          <input type="text" id="discipline-habit-input" placeholder="e.g., Fajr Prayer, On-time Sleep, Screen Lock">
-        </div>
-        <div class="tracker-list" id="discipline-habit-list">
-          <div class="empty-state">// add habits to track progress.</div>
-        </div>
-      </div>
+    <div class="summary-grid">
+      <div class="summary-card"><div class="summary-label">ACTIVE STUDY TASKS</div><div class="summary-value" id="summary-study-open">0</div><div class="summary-foot">pending in study log</div></div>
+      <div class="summary-card"><div class="summary-label">ACTIVE WORKOUTS</div><div class="summary-value" id="summary-physical-open">0</div><div class="summary-foot">pending in physical log</div></div>
+      <div class="summary-card"><div class="summary-label">ACTIVE DISCIPLINE HABITS</div><div class="summary-value" id="summary-discipline-open">0</div><div class="summary-foot">pending in discipline log</div></div>
+      <div class="summary-card"><div class="summary-label">VELOCITY SCORE</div><div class="summary-value" id="summary-velocity">0</div><div class="summary-foot">today</div></div>
+    </div>
+    <div class="quick-actions">
+      <button class="btn btn-primary-study" data-jump="study-log">OPEN STUDY LOG</button>
+      <button class="btn btn-primary-physical" data-jump="physical-log">OPEN PHYSICAL LOG</button>
+      <button class="btn btn-primary-discipline" data-j跳转="discipline-log">OPEN DISCIPLINE LOG</button>
+      <button class="btn btn-ghost" data-jump="analytics">OPEN ANALYTICS</button>
     </div>
   </section>
-
-  <!-- VIDEOS -->
+  <section class="tab-panel" id="tab-study-log">
+    <div class="panel-header"><h2 class="section-title section-title-study">STUDY LOG</h2><div class="section-sub">// ADD STUDY TARGETS & CHECK OFF COMPLETION</div></div>
+    <div class="log-card log-card-study">
+      <div class="card-head"><div class="card-title card-title-study">DAILY STUDY INPUT</div><div class="card-actions"><span class="count-badge" id="study-open-count">0 OPEN</span><button class="btn btn-primary-study" id="add-study-btn">+ ADD STUDY TARGET</button></div></div>
+      <div class="tracker-input-container"><input type="text" id="study-task-input" placeholder="e.g., Physics Chapter 4 CQ, Chemistry MCQs, Bangla 2nd Paper Model Test"></div>
+      <div class="tracker-list" id="study-task-list"><div class="empty-state">// add study targets to track progress.</div></div>
+    </div>
+  </section>
+  <section class="tab-panel" id="tab-physical-log">
+    <div class="panel-header"><h2 class="section-title section-title-physical">PHYSICAL LOG</h2><div class="section-sub">// ADD WORKOUT ROUTINES & TRACK EXECUTION</div></div>
+    <div class="log-card log-card-physical">
+      <div class="card-head"><div class="card-title card-title-physical">DAILY PHYSICAL INPUT</div><div class="card-actions"><span class="count-badge" id="physical-open-count">0 OPEN</span><button class="btn btn-primary-physical" id="add-physical-btn">+ ADD WORKOUT</button></div></div>
+      <div class="tracker-input-container"><input type="text" id="physical-workout-input" placeholder="e.g., Pushups, Planks, Calisthenics Routine"></div>
+      <div class="tracker-list" id="physical-workout-list"><div class="empty-state">// add workouts to track progress.</div></div>
+    </div>
+  </section>
+  <section class="tab-panel" id="tab-discipline-log">
+    <div class="panel-header"><h2 class="section-title section-title-discipline">DISCIPLINE LOG</h2><div class="section-sub">// TRACK CORE DAILY DISCIPLINE HABITS</div></div>
+    <div class="log-card log-card-discipline">
+      <div class="card-head"><div class="card-title card-title-discipline">DAILY DISCIPLINE INPUT</div><div class="card-actions"><span class="count-badge" id="discipline-open-count">0 OPEN</span><button class="btn btn-primary-discipline" id="add-discipline-btn">+ ADD HABIT</button></div></div>
+      <div class="tracker-input-container"><input type="text" id="discipline-habit-input" placeholder="e.g., Fajr Prayer, On-time Sleep, Screen Lock, Focus Mode"></div>
+      <div class="tracker-list" id="discipline-habit-list"><div class="empty-state">// add discipline habits to track progress.</div></div>
+    </div>
+  </section>
   <section class="tab-panel" id="tab-videos">
-    <div class="panel-header">
-      <h2 class="section-title section-title-video">VIDEO QUEUE</h2>
-      <div class="section-sub">// YOUTUBE URL &rarr; QUEUE &rarr; WATCH &rarr; MARK DONE</div>
-    </div>
-
-    <div class="content-card card-video">
-      <form id="video-form" class="input-group">
-        <input type="text" id="video-url" placeholder="https://youtube.com/watch?v=..." required>
-        <button type="submit" class="btn btn-primary-video">+ ADD TO QUEUE</button>
-      </form>
-    </div>
-
+    <div class="panel-header"><h2 class="section-title section-title-video">VIDEO QUEUE</h2><div class="section-sub">// YOUTUBE URL &rarr; QUEUE &rarr; WATCH &rarr; MARK DONE</div></div>
+    <div class="content-card card-video"><form id="video-form" class="input-group"><input type="text" id="video-url" placeholder="https://youtube.com/watch?v=..." required><button type="submit" class="btn btn-primary-video">+ ADD TO QUEUE</button></form></div>
     <div class="grid-2">
-      <div class="content-card card-video">
-        <div class="card-head">
-          <div class="card-title">CURRENT VIDEO</div>
-        </div>
-        <div id="video-player" class="video-player">
-          <div class="empty-state">// select a queued video to watch.</div>
-        </div>
-        <div id="video-controls" class="video-controls">
-          <button class="btn btn-primary-video" id="mark-complete-btn" disabled>&#10003; MARK COMPLETE</button>
-          <button class="btn btn-danger" id="delete-current-btn" disabled>&#10007; DELETE</button>
-        </div>
-      </div>
-
-      <div class="content-card card-video">
-        <div class="card-head">
-          <div class="card-title">QUEUE</div>
-          <div class="card-actions">
-            <span class="count-badge" id="queue-count">0</span>
-          </div>
-        </div>
-        <div id="video-queue" class="queue-list">
-          <div class="empty-state">// queue is empty. add a youtube url above.</div>
-        </div>
-      </div>
+      <div class="content-card card-video"><div class="card-head"><div class="card-title">CURRENT VIDEO</div></div><div id="video-player" class="video-player"><div class="empty-state">// select a queued video to watch.</div></div><div id="video-controls" class="video-controls"><button class="btn btn-primary-video" id="mark-complete-btn" disabled>&#10003; MARK COMPLETE</button><button class="btn btn-danger" id="delete-current-btn" disabled>&#10007; DELETE</button></div></div>
+      <div class="content-card card-video"><div class="card-head"><div class="card-title">QUEUE</div><div class="card-actions"><span class="count-badge" id="queue-count">0</span></div></div><div id="video-queue" class="queue-list"><div class="empty-state">// queue is empty. add a youtube url above.</div></div></div>
     </div>
-
-    <div class="content-card card-video">
-      <div class="card-head">
-        <div class="card-title">COMPLETED ARCHIVE</div>
-        <div class="card-actions">
-          <button class="mini-btn" id="clear-archive">Clear</button>
-        </div>
-      </div>
-      <div id="video-archive" class="queue-list">
-        <div class="empty-state">// no completed videos yet.</div>
-      </div>
-    </div>
+    <div class="content-card card-video"><div class="card-head"><div class="card-title">COMPLETED ARCHIVE</div><div class="card-actions"><button class="mini-btn" id="clear-archive">Clear</button></div></div><div id="video-archive" class="queue-list"><div class="empty-state">// no completed videos yet.</div></div></div>
   </section>
-
-  <!-- HABITS -->
   <section class="tab-panel" id="tab-habits">
-    <div class="panel-header">
-      <h2 class="section-title section-title-habits">HABITS</h2>
-      <div class="section-sub">// MEDITATION &middot; CALISTHENICS &middot; SLEEP</div>
-    </div>
-
+    <div class="panel-header"><h2 class="section-title section-title-habits">HABITS</h2><div class="section-sub">// MEDITATION &middot; CALISTHENICS &middot; SLEEP</div></div>
     <div class="grid-3">
-      <div class="habit-card" data-habit="meditation">
-        <div class="habit-icon">M</div>
-        <div class="habit-name">MEDITATION</div>
-        <div class="habit-status" id="habit-status-meditation">NOT DONE</div>
-        <button class="btn btn-primary-habit" data-toggle="meditation">TOGGLE</button>
-      </div>
-      <div class="habit-card" data-habit="calisthenics">
-        <div class="habit-icon">C</div>
-        <div class="habit-name">CALISTHENICS</div>
-        <div class="habit-status" id="habit-status-calisthenics">NOT DONE</div>
-        <button class="btn btn-primary-habit" data-toggle="calisthenics">TOGGLE</button>
-      </div>
-      <div class="habit-card" data-habit="sleep">
-        <div class="habit-icon">S</div>
-        <div class="habit-name">SLEEP</div>
-        <div class="habit-status" id="habit-status-sleep">NOT DONE</div>
-        <button class="btn btn-primary-habit" data-toggle="sleep">TOGGLE</button>
-      </div>
+      <div class="habit-card" data-habit="meditation"><div class="habit-icon">M</div><div class="habit-name">MEDITATION</div><div class="habit-status" id="habit-status-meditation">NOT DONE</div><button class="btn btn-primary-habit" data-toggle="meditation">TOGGLE</button></div>
+      <div class="habit-card" data-habit="calisthenics"><div class="habit-icon">C</div><div class="habit-name">CALISTHENICS</div><div class="habit-status" id="habit-status-calisthenics">NOT DONE</div><button class="btn btn-primary-habit" data-toggle="calisthenics">TOGGLE</button></div>
+      <div class="habit-card" data-habit="sleep"><div class="habit-icon">S</div><div class="habit-name">SLEEP</div><div class="habit-status" id="habit-status-sleep">NOT DONE</div><button class="btn btn-primary-habit" data-toggle="sleep">TOGGLE</button></div>
     </div>
-
-    <div class="content-card card-habit">
-      <div class="card-head">
-        <div class="card-title">HABIT SCORE</div>
-      </div>
-      <div class="score-display">
-        <div class="score-big" id="habit-score-big">0</div>
-        <div class="score-of">/ 3</div>
-      </div>
-      <div class="score-bar">
-        <div class="score-fill" id="score-fill" style="width:0%"></div>
-      </div>
-    </div>
-
-    <div class="content-card card-habit">
-      <div class="card-head">
-        <div class="card-title">7-DAY HISTORY</div>
-      </div>
-      <div id="habit-history" class="history-grid"></div>
-    </div>
+    <div class="content-card card-habit"><div class="card-head"><div class="card-title">HABIT SCORE</div></div><div class="score-display"><div class="score-big" id="habit-score-big">0</div><div class="score-of">/ 3</div></div><div class="score-bar"><div class="score-fill" id="score-fill" style="width:0%"></div></div></div>
+    <div class="content-card card-habit"><div class="card-head"><div class="card-title">7-DAY HISTORY</div></div><div id="habit-history" class="history-grid"></div></div>
   </section>
-
-  <!-- NEWS -->
   <section class="tab-panel" id="tab-news">
-    <div class="panel-header">
-      <h2 class="section-title section-title-news">NEWS DIGEST</h2>
-      <div class="section-sub">// TOP AI BREAKTHROUGHS &amp; SCIENTIFIC DISCOVERIES</div>
-    </div>
-
-    <div class="content-card card-news">
-      <div class="card-head">
-        <div class="card-title">CYCLE CONTROLS</div>
-        <div class="card-actions">
-          <button class="btn btn-primary-news" id="run-audit-btn">RUN NIGHTLY AUDIT</button>
-          <button class="btn btn-danger" id="clear-news">CLEAR CYCLE</button>
-        </div>
-      </div>
-      <div class="audit-meta">
-        <div class="meta-line"><span class="meta-label">LAST AUDIT:</span> <span id="last-audit-time">never</span></div>
-        <div class="meta-line"><span class="meta-label">SOURCES:</span> arXiv &middot; MIT News &middot; Nature &middot; DeepMind Blog</div>
-        <div class="meta-line"><span class="meta-label">STATUS:</span> <span id="audit-status">IDLE</span></div>
-      </div>
-    </div>
-
-    <div id="news-list" class="news-list">
-      <div class="empty-state">// no news items yet. run the nightly audit.</div>
-    </div>
+    <div class="panel-header"><h2 class="section-title section-title-news">NEWS DIGEST</h2><div class="section-sub">// TOP AI BREAKTHROUGHS &amp; SCIENTIFIC DISCOVERIES</div></div>
+    <div class="content-card card-news"><div class="card-head"><div class="card-title">CYCLE CONTROLS</div><div class="card-actions"><button class="btn btn-primary-news" id="run-audit-btn">RUN NIGHTLY AUDIT</button><button class="btn btn-danger" id="clear-news">CLEAR CYCLE</button></div></div><div class="audit-meta"><div class="meta-line"><span class="meta-label">LAST AUDIT:</span> <span id="last-audit-time">never</span></div><div class="meta-line"><span class="meta-label">SOURCES:</span> arXiv &middot; MIT News &middot; Nature &middot; DeepMind Blog</div><div class="meta-line"><span class="meta-label">STATUS:</span> <span id="audit-status">IDLE</span></div></div></div>
+    <div id="news-list" class="news-list"><div class="empty-state">// no news items yet. run the nightly audit.</div></div>
   </section>
-
-  <!-- ANALYTICS -->
   <section class="tab-panel" id="tab-analytics">
-    <div class="panel-header">
-      <h2 class="section-title section-title-analytics">ANALYTICS</h2>
-      <div class="section-sub">// VELOCITY &amp; HERMES REPORTS</div>
-    </div>
-
+    <div class="panel-header"><h2 class="section-title section-title-analytics">ANALYTICS</h2><div class="section-sub">// VELOCITY &amp; HERMES REPORTS</div></div>
     <div class="grid-4">
-      <div class="stat-card stat-card-video">
-        <div class="stat-label">TASKS TODAY</div>
-        <div class="stat-value" id="ana-tasks-today">0</div>
-        <div class="stat-foot">completed</div>
-      </div>
-      <div class="stat-card stat-card-habit">
-        <div class="stat-label">7-DAY AVG</div>
-        <div class="stat-value" id="ana-tasks-7day">0</div>
-        <div class="stat-foot">per day</div>
-      </div>
-      <div class="stat-card stat-card-velocity">
-        <div class="stat-label">VELOCITY SCORE</div>
-        <div class="stat-value" id="ana-velocity">0</div>
-        <div class="stat-foot">weighted</div>
-      </div>
-      <div class="stat-card stat-card-news">
-        <div class="stat-label">STREAK</div>
-        <div class="stat-value" id="ana-streak">0</div>
-        <div class="stat-foot">days active</div>
-      </div>
+      <div class="stat-card stat-card-video"><div class="stat-label">TASKS TODAY</div><div class="stat-value" id="ana-tasks-today">0</div><div class="stat-foot">completed</div></div>
+      <div class="stat-card stat-card-habit"><div class="stat-label">7-DAY AVG</div><div class="stat-value" id="ana-tasks-7day">0</div><div class="stat-foot">per day</div></div>
+      <div class="stat-card stat-card-velocity"><div class="stat-label">VELOCITY SCORE</div><div class="stat-value" id="ana-velocity">0</div><div class="stat-foot">weighted</div></div>
+      <div class="stat-card stat-card-news"><div class="stat-label">STREAK</div><div class="stat-value" id="ana-streak">0</div><div class="stat-foot">days active</div></div>
     </div>
-
-    <div class="content-card card-analytics">
-      <div class="card-head">
-        <div class="card-title">VELOCITY GRAPH — LAST 7 DAYS</div>
-      </div>
-      <div id="velocity-graph" class="velocity-graph"></div>
-    </div>
-
-    <div class="content-card card-analytics">
-      <div class="card-head">
-        <div class="card-title">HERMES REPORTS</div>
-        <div class="card-actions">
-          <button class="btn btn-primary-analytics" id="gen-report-btn">GENERATE REPORT</button>
-          <button class="btn btn-danger" id="clear-reports">CLEAR ALL</button>
-        </div>
-      </div>
-      <div id="reports-list" class="reports-list">
-        <div class="empty-state">// no reports yet.</div>
-      </div>
-    </div>
+    <div class="content-card card-analytics"><div class="card-head"><div class="card-title">VELOCITY GRAPH — LAST 7 DAYS</div></div><div id="velocity-graph" class="velocity-graph"></div></div>
+    <div class="content-card card-analytics"><div class="card-head"><div class="card-title">HERMES REPORTS</div><div class="card-actions"><button class="btn btn-primary-analytics" id="gen-report-btn">GENERATE REPORT</button><button class="btn btn-danger" id="clear-reports">CLEAR ALL</button></div></div><div id="reports-list" class="reports-list"><div class="empty-state">// no reports yet.</div></div></div>
   </section>
-
 </main>
-
-<!-- ============ FOOTER ============ -->
-<footer class="main-footer">
-  <div class="footer-inner">
-    <div class="footer-left">
-      <span class="footer-brand">SAMI WAREHOUSE</span>
-      <span class="footer-dot">&middot;</span>
-      <span>v1.4</span>
-      <span class="footer-dot">&middot;</span>
-      <span>LOCAL STORAGE ENGINE</span>
-    </div>
-    <div class="footer-right">
-      <span id="storage-status">STORE: OK</span>
-      <span class="footer-dot">&middot;</span>
-      <span id="storage-size">0 KB</span>
-    </div>
-  </div>
-</footer>
-
-<!-- TOAST -->
+<footer class="main-footer"><div class="footer-inner"><div class="footer-left"><span class="footer-brand">SAMI WAREHOUSE</span><span class="footer-dot">&middot;</span><span>v1.5</span><span class="footer-dot">&middot;</span><span>LOCAL STORAGE ENGINE</span></div><div class="footer-right"><span id="storage-status">STORE: OK</span><span class="footer-dot">&middot;</span><span id="storage-size">0 KB</span></div></div></footer>
 <div id="toast" class="toast"></div>
-
 <script src="app.js"></script>
 </body>
 </html>
