@@ -20,7 +20,7 @@
       <div class="logo-mark">SW</div>
       <div class="logo-text">
         <h1 class="logo-title">SAMI<br>WAREHOUSE</h1>
-        <div class="logo-sub">Personal Command Center v1.3</div>
+        <div class="logo-sub">Personal Command Center v1.4</div>
       </div>
     </div>
     <div class="header-meta">
@@ -53,67 +53,120 @@
   <section class="tab-panel active" id="tab-dashboard">
     <div class="panel-header">
       <h2 class="section-title section-title-dashboard">DASHBOARD</h2>
-      <div class="section-sub">// LIVE STATUS OF ALL SUBSYSTEMS</div>
+      <div class="section-sub">// TONIGHT'S MISSION CONTROL</div>
     </div>
 
-    <div class="grid-4">
-      <div class="stat-card stat-card-video">
-        <div class="stat-label">QUEUED VIDEOS</div>
-        <div class="stat-value" id="dash-videos-queued">0</div>
-        <div class="stat-foot">total: <span id="dash-videos-total">0</span></div>
+    <!-- MOTIVATIONAL QUOTE BANNER -->
+    <div class="quote-banner" id="quote-banner">
+      <div class="quote-content">
+        <div class="quote-icon">&#9733;</div>
+        <div class="quote-text">
+          <div class="quote-main" id="quote-main">"Discipline is choosing between what you want now and what you want most."</div>
+          <div class="quote-author" id="quote-author">— Abraham Lincoln</div>
+        </div>
       </div>
-      <div class="stat-card stat-card-habit">
-        <div class="stat-label">TODAY'S HABIT SCORE</div>
-        <div class="stat-value" id="dash-habit-score">0/3</div>
-        <div class="stat-foot">med · calisth · sleep</div>
+      <button class="btn btn-ghost quote-next-btn" id="quote-next-btn">NEXT &#8594;</button>
+    </div>
+
+    <!-- 3 PROGRESS CARDS -->
+    <div class="progress-grid">
+      <!-- STUDY PROGRESS CARD -->
+      <div class="progress-card progress-card-study">
+        <div class="progress-header">
+          <div class="progress-icon">&#9776;</div>
+          <div class="progress-title">STUDY PROGRESS</div>
+        </div>
+        <div class="progress-body">
+          <div class="progress-percent" id="study-percent">0%</div>
+          <div class="progress-status" id="study-status">NEEDS FOCUS</div>
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="study-bar" style="width:0%"></div>
+          </div>
+          <div class="progress-details" id="study-details">0 / 0 tasks</div>
+        </div>
       </div>
-      <div class="stat-card stat-card-news">
-        <div class="stat-label">NEWS ITEMS</div>
-        <div class="stat-value" id="dash-news-count">0</div>
-        <div class="stat-foot">this cycle</div>
+
+      <!-- PHYSICAL PROGRESS CARD -->
+      <div class="progress-card progress-card-physical">
+        <div class="progress-header">
+          <div class="progress-icon">&#9824;</div>
+          <div class="progress-title">PHYSICAL PROGRESS</div>
+        </div>
+        <div class="progress-body">
+          <div class="progress-percent" id="physical-percent">0%</div>
+          <div class="progress-status" id="physical-status">NEEDS FOCUS</div>
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="physical-bar" style="width:0%"></div>
+          </div>
+          <div class="progress-details" id="physical-details">0 / 0 workouts</div>
+        </div>
       </div>
-      <div class="stat-card stat-card-velocity">
-        <div class="stat-label">VELOCITY</div>
-        <div class="stat-value" id="dash-velocity">0</div>
-        <div class="stat-foot">units/day</div>
+
+      <!-- DISCIPLINE PROGRESS CARD -->
+      <div class="progress-card progress-card-discipline">
+        <div class="progress-header">
+          <div class="progress-icon">&#9830;</div>
+          <div class="progress-title">DISCIPLINE PROGRESS</div>
+        </div>
+        <div class="progress-body">
+          <div class="progress-percent" id="discipline-percent">0%</div>
+          <div class="progress-status" id="discipline-status">NEEDS FOCUS</div>
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="discipline-bar" style="width:0%"></div>
+          </div>
+          <div class="progress-details" id="discipline-details">0 / 0 habits</div>
+        </div>
       </div>
     </div>
 
-    <div class="grid-2">
-      <div class="content-card">
+    <!-- DAILY ACTION TRACKERS -->
+    <div class="tracker-grid">
+      <!-- STUDY TRACKER -->
+      <div class="tracker-card tracker-card-study">
         <div class="card-head">
-          <div class="card-title">QUEUED NOW</div>
+          <div class="card-title card-title-study">STUDY TRACKER</div>
           <div class="card-actions">
-            <button class="mini-btn" data-jump="videos">+ ADD</button>
+            <button class="btn btn-primary-study" id="add-study-btn">+ ADD TASK</button>
           </div>
         </div>
-        <div id="dash-queued-list" class="mini-list">
-          <div class="empty-state">// queue empty. add a youtube url.</div>
+        <div class="tracker-input-container">
+          <input type="text" id="study-task-input" placeholder="e.g., Physics Chapter 4 CQ">
+        </div>
+        <div class="tracker-list" id="study-task-list">
+          <div class="empty-state">// add study tasks to track progress.</div>
         </div>
       </div>
 
-      <div class="content-card">
+      <!-- PHYSICAL TRACKER -->
+      <div class="tracker-card tracker-card-physical">
         <div class="card-head">
-          <div class="card-title">TODAY'S HABITS</div>
+          <div class="card-title card-title-physical">PHYSICAL TRACKER</div>
           <div class="card-actions">
-            <button class="mini-btn" data-jump="habits">TOGGLE</button>
+            <button class="btn btn-primary-physical" id="add-physical-btn">+ ADD WORKOUT</button>
           </div>
         </div>
-        <div id="dash-habit-list" class="mini-list">
-          <div class="empty-state">// habits not tracked yet.</div>
+        <div class="tracker-input-container">
+          <input type="text" id="physical-workout-input" placeholder="e.g., Pushups, Planks, Calisthenics">
+        </div>
+        <div class="tracker-list" id="physical-workout-list">
+          <div class="empty-state">// add workouts to track progress.</div>
         </div>
       </div>
-    </div>
 
-    <div class="content-card">
-      <div class="card-head">
-        <div class="card-title">HERMES REPORT</div>
-        <div class="card-actions">
-          <button class="mini-btn" data-jump="analytics">VIEW</button>
+      <!-- DISCIPLINE TRACKER -->
+      <div class="tracker-card tracker-card-discipline">
+        <div class="card-head">
+          <div class="card-title card-title-discipline">DISCIPLINE TRACKER</div>
+          <div class="card-actions">
+            <button class="btn btn-primary-discipline" id="add-discipline-btn">+ ADD HABIT</button>
+          </div>
         </div>
-      </div>
-      <div id="dash-hermes-report" class="report-box">
-        <div class="empty-state">// no report generated yet. run nightly audit in analytics.</div>
+        <div class="tracker-input-container">
+          <input type="text" id="discipline-habit-input" placeholder="e.g., Fajr Prayer, On-time Sleep, Screen Lock">
+        </div>
+        <div class="tracker-list" id="discipline-habit-list">
+          <div class="empty-state">// add habits to track progress.</div>
+        </div>
       </div>
     </div>
   </section>
@@ -307,7 +360,7 @@
     <div class="footer-left">
       <span class="footer-brand">SAMI WAREHOUSE</span>
       <span class="footer-dot">&middot;</span>
-      <span>v1.3</span>
+      <span>v1.4</span>
       <span class="footer-dot">&middot;</span>
       <span>LOCAL STORAGE ENGINE</span>
     </div>

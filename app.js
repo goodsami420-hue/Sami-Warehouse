@@ -1,7 +1,6 @@
 /* ============================================================
-   SAMI WAREHOUSE — v1.0
+   SAMI WAREHOUSE — v1.4
    Client-side logic with localStorage persistence.
-   Parity with the FastAPI server in /server/server.py.
    ============================================================ */
 
 (function() {
@@ -14,17 +13,15 @@ const STORE = {
   news: 'sw_news',
   analytics: 'sw_analytics',
   meta: 'sw_meta',
+  studyTasks: 'sw_study_tasks',
+  physicalTasks: 'sw_physical_tasks',
+  disciplineTasks: 'sw_discipline_tasks',
 };
 
+// ===================== UTILS =====================
 function todayKey(d) {
   d = d || new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-}
-
-function yesterdayKey() {
-  const d = new Date();
-  d.setDate(d.getDate() - 1);
-  return todayKey(d);
 }
 
 function daysAgoKey(n) {
@@ -51,29 +48,6 @@ function save(key, val) {
   }
 }
 
-// ===================== STATE =====================
-const State = {
-  videos: load(STORE.videos, []),           // [{id, title, url, embed_id, subject, added_at, completed_status}]
-  habits: load(STORE.habits, {}),           // { 'YYYY-MM-DD': {meditation, calisthenics, sleep, score} }
-  news: load(STORE.news, []),               // [{id, date, title, source, summary_bullets, read_time}]
-  analytics: load(STORE.analytics, []),     // [{id, date, completed_tasks_count, velocity_score, hermes_report_text}]
-  meta: load(STORE.meta, {
-    last_audit_at: null,
-    activeVideoId: null,
-    streak: 0,
-  }),
-};
-
-function persist() {
-  save(STORE.videos, State.videos);
-  save(STORE.habits, State.habits);
-  save(STORE.news, State.news);
-  save(STORE.analytics, State.analytics);
-  save(STORE.meta, State.meta);
-  updateStorageIndicator();
-}
-
-// ===================== UTILS =====================
 function uid() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 }
@@ -97,6 +71,36 @@ function fmtTime(s) {
   return d.toLocaleTimeString('en-US', { hour12: false });
 }
 
+// ===================== STATE =====================
+const State = {
+  videos: load(STORE.videos, []),
+  habits: load(STORE.habits, {}),
+  news: load(STORE.news, []),
+  analytics: load(STORE.analytics, []),
+  meta: load(STORE.meta, {
+    last_audit_at: null,
+    activeVideoId: null,
+    streak: 0,
+  }),
+  studyTasks: load(STORE.studyTasks, {}),
+  physicalTasks: load(STORE.physicalTasks, {}),
+  disciplineTasks: load(STORE.disciplineTasks, {}),
+  quoteIndex: 0,
+};
+
+function persist() {
+  save(STORE.videos, State.videos);
+  save(STORE.habits, State.habits);
+  save(STORE.news, State.news);
+  save(STORE.analytics, State.analytics);
+  save(STORE.meta, State.meta);
+  save(STORE.studyTasks, State.studyTasks);
+  save(STORE.physicalTasks, State.physicalTasks);
+  save(STORE.disciplineTasks, State.disciplineTasks);
+  updateStorageIndicator();
+}
+
+// ===================== TOAST =====================
 let toastTimer;
 function toast(msg, kind) {
   const el = document.getElementById('toast');
@@ -116,36 +120,74 @@ function updateStorageIndicator() {
   if (sizeEl) sizeEl.textContent = (bytes / 1024).toFixed(1) + ' KB';
 }
 
-// ===================== YOUTUBE =====================
-function extractYouTubeId(input) {
-  if (!input) return null;
-  input = input.trim();
-  // Direct video ID (11 chars)
-  if (/^[a-zA-Z0-9_-]{11}$/.test(input)) return input;
-  // youtube.com/watch?v=ID
-  const watch = input.match(/(?:youtube\.com|youtu\.be)\/(?:watch\?.*v=|embed\/|v\/|shorts\/)([a-zA-Z0-9_-]{11})/);
-  if (watch) return watch[1];
-  // www.youtube.com/watch?list=...&v=ID
-  const param = input.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
-  if (param) return param[1];
-  // m.youtube.com/watch?v=
-  const mobile = input.match(/m\.youtube\.com\/watch\?.*?v=([a-zA-Z0-9_-]{11})/);
-  if (mobile) return mobile[1];
-  return null;
+// ===================== QUOTES =====================
+const QUOTES = [
+  { text: "Discipline is choosing between what you want now and what you want most.", author: "Abraham Lincoln" },
+  { text: "Success is the sum of small efforts, repeated day in and day out.", author: "Robert Collier" },
+  { text: "Do not judge my consistency by my appearance, but by my results.", author: "Muhammad Ali" },
+  { text: "The path is not difficult, but we often waste time looking for shortcuts.", author: "Lao Tzu" },
+  { text: "Whoever is content will be wealthy.", author: "Bukhari" },
+  { text: "Actions speak louder than words.", author: "Anonymous" },
+  { text: "Patience is the key to success.", author: "Anonymous" },
+  { text: "Every action you take is a vote for the type of person you wish to become.", author: "James Clear" },
+  { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
+  { text: "Discipline is the bridge between goals and accomplishment.", author: "Jim Rohn" },
+  { text: "You don't rise to the level of your goals, you fall to the level of your systems.", author: "James Clear" },
+  { text: "What you do every day matters more than what you do once in a while.", author: "Gretchen Rubin" },
+  { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
+  { text: "The way to get started is to quit talking and begin doing.", author: "Walt Disney" },
+  { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" },
+  { text: "You are never too old to set another goal or to dream a new dream.", author: "C.S. Lewis" },
+  { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
+  { text: "Hard work beats talent when talent doesn't work hard.", author: "Tim Notke" },
+  { text: "If you're going through hell, keep going.", author: "Winston Churchill" },
+  { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+  { text: "Do or do not. There is no try.", author: "Yoda" },
+  { text: "Your future is created by what you do today, not tomorrow.", author: "Robert Kiyosaki" },
+  { text: "It always seems impossible until it's done.", author: "Nelson Mandela" },
+  { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+  { text: "The difference between ordinary and extraordinary is that little 'extra'.", author: "Jimmy Johnson" },
+  { text: "You miss 100% of the shots you don't take.", author: "Wayne Gretzky" },
+  { text: "The master has failed more times than the beginner has even tried.", author: "Stephen Lee" },
+  { text: "Fall seven times and stand up eight.", author: "Japanese Proverb" },
+  { text: "When the going gets tough, the tough get going.", author: "Jim Rohn" },
+  { text: "Your attitude determines your direction.", author: "Napoleon Hill" },
+  { text: "Dream big, start small, act now.", author: "Ginni Rometty" },
+  { text: "Success is liking yourself, liking what you do, and liking how you do it.", author: "Maya Angelou" },
+  { text: "The only way to do it is to just do it.", author: "Nike" },
+  { text: "Push yourself, because no one else is going to do it for you.", author: "Unknown" },
+  { text: "Everything you've ever wanted is on the other side of fear.", author: "George Addair" },
+  { text: "If you're not failing, you're not trying.", author: "Barbara Anderson" },
+  { text: "Strive for progress, not perfection.", author: "Anonymous" },
+  { text: "The journey of a thousand miles begins with one step.", author: "Lao Tzu" },
+  { text: "Success is not about money, it's about fulfillment.", author: "Ryan Holiday" },
+];
+
+function setupQuotes() {
+  const btn = document.getElementById('quote-next-btn');
+  if (!btn) return;
+  
+  btn.addEventListener('click', () => {
+    State.quoteIndex = (State.quoteIndex + 1) % QUOTES.length;
+    renderQuote();
+  });
+  
+  renderQuote();
+  
+  setInterval(() => {
+    State.quoteIndex = (State.quoteIndex + 1) % QUOTES.length;
+    renderQuote();
+  }, 20000);
 }
 
-async function fetchVideoTitle(videoId) {
-  // Best-effort title fetch via YouTube oEmbed (CORS-enabled).
-  try {
-    const res = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}&format=json`);
-    if (res.ok) {
-      const data = await res.json();
-      return data.title || '';
-    }
-  } catch (e) {
-    console.warn('oEmbed failed', e);
-  }
-  return '';
+function renderQuote() {
+  const main = document.getElementById('quote-main');
+  const author = document.getElementById('quote-author');
+  if (!main || !author) return;
+  
+  const quote = QUOTES[State.quoteIndex];
+  main.textContent = `"${quote.text}"`;
+  author.textContent = `— ${quote.author}`;
 }
 
 // ===================== TABS =====================
@@ -179,11 +221,34 @@ function setupClock() {
 }
 
 // ===================== VIDEOS =====================
+function extractYouTubeId(input) {
+  if (!input) return null;
+  input = input.trim();
+  if (/^[a-zA-Z0-9_-]{11}$/.test(input)) return input;
+  const watch = input.match(/(?:youtube\.com|youtu\.be)\/(?:watch\?.*v=|embed\/|v\/|shorts\/)([a-zA-Z0-9_-]{11})/);
+  if (watch) return watch[1];
+  const param = input.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
+  if (param) return param[1];
+  return null;
+}
+
+async function fetchVideoTitle(videoId) {
+  try {
+    const res = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}&format=json`);
+    if (res.ok) {
+      const data = await res.json();
+      return data.title || '';
+    }
+  } catch (e) {
+    console.warn('oEmbed failed', e);
+  }
+  return '';
+}
+
 function renderVideos() {
   const queue = State.videos.filter(v => !v.completed_status);
   const done = State.videos.filter(v => v.completed_status);
 
-  // Queue
   const queueEl = document.getElementById('video-queue');
   const countEl = document.getElementById('queue-count');
   countEl.textContent = queue.length;
@@ -207,7 +272,6 @@ function renderVideos() {
     `).join('');
   }
 
-  // Archive
   const archiveEl = document.getElementById('video-archive');
   if (!done.length) {
     archiveEl.innerHTML = '<div class="empty-state">// no completed videos yet.</div>';
@@ -227,7 +291,6 @@ function renderVideos() {
     `).join('');
   }
 
-  // Player
   const playerEl = document.getElementById('video-player');
   const markBtn = document.getElementById('mark-complete-btn');
   const delBtn = document.getElementById('delete-current-btn');
@@ -250,7 +313,6 @@ function renderVideos() {
     delBtn.disabled = true;
   }
 
-  // Event delegation
   queueEl.querySelectorAll('.queue-watch, .queue-item').forEach(el => {
     if (el.classList.contains('queue-item') && !el.classList.contains('completed')) {
       el.addEventListener('click', (e) => {
@@ -444,10 +506,206 @@ function setupHabits() {
   });
 }
 
-// ===================== NEWS (arXiv API) =====================
-// arXiv API supports CORS. We pull recent AI/ML papers as our "AI breakthroughs".
-// MIT News and Nature are NOT CORS-accessible from a static page — we note this
-// honestly in the UI rather than pretending we scraped them.
+// ===================== TRACKERS =====================
+function getTodayTasks(type) {
+  const today = todayKey();
+  const key = type === 'study' ? 'studyTasks' : type === 'physical' ? 'physicalTasks' : 'disciplineTasks';
+  return State[key][today] || [];
+}
+
+function addTask(type, name) {
+  if (!name.trim()) return;
+  const today = todayKey();
+  const key = type === 'study' ? 'studyTasks' : type === 'physical' ? 'physicalTasks' : 'disciplineTasks';
+  if (!State[key][today]) {
+    State[key][today] = [];
+  }
+  State[key][today].push({
+    id: uid(),
+    name: name.trim(),
+    checked: false,
+    added_at: new Date().toISOString(),
+  });
+  persist();
+  renderTracker(type);
+  renderDashboard();
+  toast('Task added', 'success');
+}
+
+function toggleTask(type, id) {
+  const today = todayKey();
+  const key = type === 'study' ? 'studyTasks' : type === 'physical' ? 'physicalTasks' : 'disciplineTasks';
+  const tasks = State[key][today] || [];
+  const task = tasks.find(t => t.id === id);
+  if (task) {
+    task.checked = !task.checked;
+    persist();
+    renderTracker(type);
+    renderDashboard();
+  }
+}
+
+function deleteTask(type, id) {
+  const today = todayKey();
+  const key = type === 'study' ? 'studyTasks' : type === 'physical' ? 'physicalTasks' : 'disciplineTasks';
+  State[key][today] = (State[key][today] || []).filter(t => t.id !== id);
+  persist();
+  renderTracker(type);
+  renderDashboard();
+  toast('Task deleted', 'success');
+}
+
+function renderTracker(type) {
+  const today = todayKey();
+  const key = type === 'study' ? 'studyTasks' : type === 'physical' ? 'physicalTasks' : 'disciplineTasks';
+  const listEl = document.getElementById(`${type}-task-list`);
+  const tasks = State[key][today] || [];
+  
+  if (!tasks.length) {
+    const placeholder = type === 'study' ? 'study tasks' : type === 'physical' ? 'workouts' : 'habits';
+    listEl.innerHTML = `<div class="empty-state">// add ${placeholder} to track progress.</div>`;
+    return;
+  }
+  
+  listEl.innerHTML = tasks.map(t => `
+    <div class="tracker-item ${t.checked ? 'checked' : ''}" data-id="${t.id}">
+      <div class="tracker-checkbox ${t.checked ? 'checked' : ''}" data-toggle="${t.id}">
+        ${t.checked ? '✓' : ''}
+      </div>
+      <div class="tracker-item-name">${escapeHTML(t.name)}</div>
+      <button class="tracker-item-delete" data-delete="${t.id}">&#10007;</button>
+    </div>
+  `).join('');
+  
+  listEl.querySelectorAll('[data-toggle]').forEach(cb => {
+    cb.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleTask(type, cb.dataset.toggle);
+    });
+  });
+  
+  listEl.querySelectorAll('[data-delete]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      deleteTask(type, btn.dataset.delete);
+    });
+  });
+}
+
+function setupTrackers() {
+  const studyBtn = document.getElementById('add-study-btn');
+  const studyInput = document.getElementById('study-task-input');
+  if (studyBtn && studyInput) {
+    studyBtn.addEventListener('click', () => {
+      addTask('study', studyInput.value);
+      studyInput.value = '';
+    });
+    studyInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        addTask('study', studyInput.value);
+        studyInput.value = '';
+      }
+    });
+  }
+  
+  const physicalBtn = document.getElementById('add-physical-btn');
+  const physicalInput = document.getElementById('physical-workout-input');
+  if (physicalBtn && physicalInput) {
+    physicalBtn.addEventListener('click', () => {
+      addTask('physical', physicalInput.value);
+      physicalInput.value = '';
+    });
+    physicalInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        addTask('physical', physicalInput.value);
+        physicalInput.value = '';
+      }
+    });
+  }
+  
+  const disciplineBtn = document.getElementById('add-discipline-btn');
+  const disciplineInput = document.getElementById('discipline-habit-input');
+  if (disciplineBtn && disciplineInput) {
+    disciplineBtn.addEventListener('click', () => {
+      addTask('discipline', disciplineInput.value);
+      disciplineInput.value = '';
+    });
+    disciplineInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        addTask('discipline', disciplineInput.value);
+        disciplineInput.value = '';
+      }
+    });
+  }
+}
+
+function renderAllTrackers() {
+  renderTracker('study');
+  renderTracker('physical');
+  renderTracker('discipline');
+}
+
+// ===================== DASHBOARD =====================
+function renderDashboard() {
+  const today = todayKey();
+  
+  const studyTasks = State.studyTasks[today] || [];
+  const studyDone = studyTasks.filter(t => t.checked).length;
+  const studyTotal = studyTasks.length;
+  const studyPct = studyTotal > 0 ? Math.round((studyDone / studyTotal) * 100) : 0;
+  
+  const physicalTasks = State.physicalTasks[today] || [];
+  const physicalDone = physicalTasks.filter(t => t.checked).length;
+  const physicalTotal = physicalTasks.length;
+  const physicalPct = physicalTotal > 0 ? Math.round((physicalDone / physicalTotal) * 100) : 0;
+  
+  const disciplineTasks = State.disciplineTasks[today] || [];
+  const disciplineDone = disciplineTasks.filter(t => t.checked).length;
+  const disciplineTotal = disciplineTasks.length;
+  const disciplinePct = disciplineTotal > 0 ? Math.round((disciplineDone / disciplineTotal) * 100) : 0;
+  
+  document.getElementById('study-percent').textContent = `${studyPct}%`;
+  document.getElementById('study-bar').style.width = `${studyPct}%`;
+  document.getElementById('study-details').textContent = `${studyDone} / ${studyTotal} tasks`;
+  updateStatus('study-status', studyPct);
+  
+  document.getElementById('physical-percent').textContent = `${physicalPct}%`;
+  document.getElementById('physical-bar').style.width = `${physicalPct}%`;
+  document.getElementById('physical-details').textContent = `${physicalDone} / ${physicalTotal} workouts`;
+  updateStatus('physical-status', physicalPct);
+  
+  document.getElementById('discipline-percent').textContent = `${disciplinePct}%`;
+  document.getElementById('discipline-bar').style.width = `${disciplinePct}%`;
+  document.getElementById('discipline-details').textContent = `${disciplineDone} / ${disciplineTotal} habits`;
+  updateStatus('discipline-status', disciplinePct);
+  
+  const totalTasks = studyDone + physicalDone + disciplineDone;
+  let rec = State.analytics.find(a => a.date === today);
+  if (rec) {
+    rec.completed_tasks_count = totalTasks;
+    rec.velocity_score = totalTasks + (getTodayHabits().score || 0) * 2;
+    persist();
+  }
+}
+
+function updateStatus(elementId, pct) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  
+  el.className = 'progress-status';
+  if (pct >= 80) {
+    el.classList.add('excellent');
+    el.textContent = 'EXCELLENT';
+  } else if (pct >= 40) {
+    el.classList.add('average');
+    el.textContent = 'AVERAGE';
+  } else {
+    el.classList.add('needs-focus');
+    el.textContent = 'NEEDS FOCUS';
+  }
+}
+
+// ===================== NEWS =====================
 async function runNightlyAudit() {
   const btn = document.getElementById('run-audit-btn');
   const statusEl = document.getElementById('audit-status');
@@ -457,7 +715,6 @@ async function runNightlyAudit() {
   const articles = [];
   const today = todayKey();
 
-  // 1) arXiv API — recent AI/ML cs category, sorted by submitted date
   try {
     const arxivUrl = 'https://export.arxiv.org/api/query?search_query=cat:cs.AI+OR+cat:cs.LG+OR+cat:cs.CL&start=0&max_results=8&sortBy=submittedDate&sortOrder=descending';
     const res = await fetch(arxivUrl);
@@ -475,15 +732,15 @@ async function runNightlyAudit() {
       if (!title) continue;
       const bullets = [];
       bullets.push(summary.slice(0, 220) + (summary.length > 220 ? '…' : ''));
-      if (authors) bullets.push('Authors: ' + authors + (summary.length > 220 ? '' : ''));
+      if (authors) bullets.push('Authors: ' + authors);
       bullets.push('Published: ' + new Date(published).toLocaleDateString('en-US'));
       articles.push({
         id: uid(),
         date: today,
-        title: title.length > 90 ? title.slice(0, 87) + '…' : title,
-        source: 'arXiv (cs.AI/cs.LG/cs.CL)',
+        title: title,
+        source: 'arXiv',
         summary_bullets: bullets,
-        read_time: 3 + Math.floor(Math.random() * 3),
+        read_time: Math.max(2, Math.floor(bullets.join(' ').split(' ').length / 200)),
       });
       count++;
     }
@@ -491,132 +748,97 @@ async function runNightlyAudit() {
     console.warn('arXiv fetch failed', e);
   }
 
-  // 2) Fallback / curated "MIT / Nature" — we can't hit those from a browser due to CORS.
-  //    Be honest about it rather than fabricating content.
-  if (articles.length < 3) {
-    const FALLBACK_ITEMS = [
-      {
-        title: 'GPT-4o mini: sub-50ms first-token on consumer silicon',
-        source: 'OpenAI Research (fallback)',
-        summary_bullets: [
-          'Compact 8B MoE reaches near-GPT-4 quality at a fraction of the cost.',
-          'Trained on ~10T mixed multimodal tokens across 2023-2024 sources.',
-          'Open API pricing slashed 15x vs base GPT-4o at the lower tier.',
-        ],
-        read_time: 2,
-      },
-      {
-        title: 'AlphaFold 3 extends to DNA, RNA, and protein-ligand complexes',
-        source: 'DeepMind (fallback)',
-        summary_bullets: [
-          'Single model now handles all bio-macromolecule classes, no separate modules.',
-          'Reported accuracy improvement on antibody-antigen pairs vs AlphaFold-Multimer.',
-          'Weights open under a non-commercial licence for academic researchers.',
-        ],
-        read_time: 3,
-      },
-      {
-        title: 'Meta Llama 4 Scout / Maverick: MoE architecture at 17B active params',
-        source: 'Meta AI (fallback)',
-        summary_bullets: [
-          'Native 10M context window for Scout; 1M for Maverick.',
-          'Multimodal pretraining: text + image + video tokens.',
-          'Released under permissive Llama community licence with commercial use rights.',
-        ],
-        read_time: 2,
-      },
-    ];
-    let fillCount = 3 - articles.length;
-    for (const fb of FALLBACK_ITEMS) {
-      if (fillCount <= 0) break;
-      articles.push({
-        id: uid(),
-        date: today,
-        title: fb.title,
-        source: fb.source,
-        summary_bullets: fb.summary_bullets,
-        read_time: fb.read_time,
-      });
-      fillCount--;
-    }
+  if (articles.length === 0) {
+    articles.push({
+      id: uid(),
+      date: today,
+      title: "Network issue — couldn't fetch from arXiv",
+      source: "System",
+      summary_bullets: ["Retry the audit later, or check your connection."],
+      read_time: 1,
+    });
   }
 
-  State.news = [...articles, ...State.news].slice(0, 20);
+  State.news = articles;
   State.meta.last_audit_at = new Date().toISOString();
-  statusEl.textContent = 'COMPLETE';
-  btn.disabled = false;
   persist();
   renderNews();
   renderDashboard();
-  toast('Audit complete: ' + articles.length + ' items', 'success');
+  statusEl.textContent = `Last audit: ${fmtTime(State.meta.last_audit_at)}`;
+  btn.disabled = false;
+  toast('Audit complete', 'success');
 }
 
 function renderNews() {
-  const el = document.getElementById('news-list');
-  const lastEl = document.getElementById('last-audit-time');
-  if (!State.news.length) {
-    el.innerHTML = '<div class="empty-state">// no news items yet. run the nightly audit.</div>';
-  } else {
-    el.innerHTML = State.news.map((n, i) => `
-      <div class="news-item">
-        <div class="news-item-head">
-          <div class="news-num">${String(i + 1).padStart(2, '0')}</div>
-          <div class="news-title">${escapeHTML(n.title)}</div>
-          <div class="news-source">${escapeHTML(n.source)} &middot; ${n.read_time || 2} MIN</div>
-        </div>
-        <ul class="news-bullets">
-          ${n.summary_bullets.map(b => `<li>${escapeHTML(b)}</li>`).join('')}
-        </ul>
-      </div>
-    `).join('');
-  }
+  const list = document.getElementById('news-list');
+  const statusEl = document.getElementById('audit-status');
+  const timeEl = document.getElementById('last-audit-time');
+
   if (State.meta.last_audit_at) {
-    lastEl.textContent = new Date(State.meta.last_audit_at).toLocaleString('en-US');
-  } else {
-    lastEl.textContent = 'never';
+    timeEl.textContent = fmtTime(State.meta.last_audit_at);
+    statusEl.textContent = `LAST AUDIT: ${fmtDate(State.meta.last_audit_at)}`;
   }
+
+  if (!State.news.length) {
+    list.innerHTML = '<div class="empty-state">// no news items yet. run the nightly audit.</div>';
+    return;
+  }
+
+  list.innerHTML = State.news.map((n, i) => `
+    <div class="news-item">
+      <div class="news-item-head">
+        <div class="news-num">${String(i + 1).padStart(2, '0')}</div>
+        <div class="news-title">${escapeHTML(n.title)}</div>
+        <div class="news-source">${escapeHTML(n.source)}</div>
+      </div>
+      <ul class="news-bullets">
+        ${n.summary_bullets.map(b => `<li>${escapeHTML(b)}</li>`).join('')}
+      </ul>
+    </div>
+  `).join('');
 }
 
 function setupNews() {
   document.getElementById('run-audit-btn').onclick = runNightlyAudit;
   document.getElementById('clear-news').onclick = () => {
+    if (!confirm('Clear current news cycle?')) return;
     State.news = [];
     State.meta.last_audit_at = null;
     persist();
     renderNews();
     renderDashboard();
-    toast('News cleared', 'success');
+    toast('Cycle cleared', 'success');
   };
 }
 
 // ===================== ANALYTICS =====================
 function logAnalyticsEvent(type) {
   const today = todayKey();
-  let day = State.analytics.find(a => a.date === today);
-  if (!day) {
-    day = {
+  let rec = State.analytics.find(a => a.date === today);
+  if (!rec) {
+    rec = {
       id: uid(),
       date: today,
       completed_tasks_count: 0,
       velocity_score: 0,
       hermes_report_text: '',
     };
-    State.analytics.push(day);
+    State.analytics.push(rec);
   }
-  day.completed_tasks_count = (day.completed_tasks_count || 0) + 1;
-  // velocity = completed_tasks + habit_score*2
-  const h = State.habits[today] || { score: 0 };
-  day.velocity_score = day.completed_tasks_count + (h.score || 0) * 2;
+  rec.completed_tasks_count = (rec.completed_tasks_count || 0) + 1;
   persist();
 }
 
 function computeStreak() {
   let streak = 0;
-  let d = new Date();
+  const d = new Date();
   while (true) {
     const key = todayKey(d);
-    const has = State.habits[key] || State.analytics.some(a => a.date === key && a.completed_tasks_count > 0);
-    if (!has) break;
+    const h = State.habits[key];
+    if (!h || h.score === 0) {
+      if (streak === 0 && key === todayKey()) break;
+      else break;
+    }
     streak++;
     d.setDate(d.getDate() - 1);
     if (streak > 365) break;
@@ -629,7 +851,6 @@ function renderAnalytics() {
   const todayRec = State.analytics.find(a => a.date === today);
   document.getElementById('ana-tasks-today').textContent = todayRec?.completed_tasks_count || 0;
 
-  // 7-day avg
   const last7 = [];
   for (let i = 0; i < 7; i++) {
     const key = daysAgoKey(i);
@@ -645,7 +866,6 @@ function renderAnalytics() {
   computeStreak();
   document.getElementById('ana-streak').textContent = State.meta.streak;
 
-  // Velocity graph — last 7 days
   const graphEl = document.getElementById('velocity-graph');
   const maxV = Math.max(1, ...last7.map((_, i) => {
     const key = daysAgoKey(6 - i);
@@ -669,7 +889,6 @@ function renderAnalytics() {
     `;
   }).join('');
 
-  // Reports list
   const reportsEl = document.getElementById('reports-list');
   const reports = State.analytics
     .filter(a => a.hermes_report_text)
@@ -705,20 +924,31 @@ function generateReport() {
     State.analytics.push(rec);
   }
   const h = State.habits[today] || { meditation: false, calisthenics: false, sleep: false, score: 0 };
+  const studyTasks = State.studyTasks[today] || [];
+  const physicalTasks = State.physicalTasks[today] || [];
+  const disciplineTasks = State.disciplineTasks[today] || [];
+  const studyDone = studyTasks.filter(t => t.checked).length;
+  const physicalDone = physicalTasks.filter(t => t.checked).length;
+  const disciplineDone = disciplineTasks.filter(t => t.checked).length;
+  const totalTasks = studyDone + physicalDone + disciplineDone;
   const queued = State.videos.filter(v => !v.completed_status).length;
   const completed = State.videos.filter(v => v.completed_status).length;
   const newsCount = State.news.length;
   computeStreak();
 
-  rec.completed_tasks_count = rec.completed_tasks_count || 0;
-  rec.velocity_score = rec.completed_tasks_count + (h.score || 0) * 2;
+  rec.completed_tasks_count = totalTasks;
+  rec.velocity_score = totalTasks + (h.score || 0) * 2;
 
   const lines = [
     `=== HERMES DAILY REPORT — ${today} ===`,
     ``,
-    `TASKS COMPLETED: ${rec.completed_tasks_count}`,
+    `TASKS COMPLETED: ${totalTasks}`,
     `VELOCITY SCORE: ${rec.velocity_score}`,
     `STREAK: ${State.meta.streak} days`,
+    ``,
+    `STUDY: ${studyDone}/${studyTasks.length} tasks`,
+    `PHYSICAL: ${physicalDone}/${physicalTasks.length} workouts`,
+    `DISCIPLINE: ${disciplineDone}/${disciplineTasks.length} habits`,
     ``,
     `HABITS:`,
     `  Meditation:  ${h.meditation ? '[X]' : '[ ]'}`,
@@ -729,7 +959,7 @@ function generateReport() {
     `VIDEO QUEUE: ${queued} pending, ${completed} completed.`,
     `NEWS ITEMS:  ${newsCount} this cycle.`,
     ``,
-    `HERMES NOTE: `,
+    `HERMES NOTE:`,
     `  ${generateHermesNote(h, rec, State.meta.streak)}`,
   ];
   rec.hermes_report_text = lines.join('\n');
@@ -766,68 +996,20 @@ function setupAnalytics() {
   };
 }
 
-// ===================== DASHBOARD =====================
-function renderDashboard() {
-  const queued = State.videos.filter(v => !v.completed_status);
-  const total = State.videos.length;
-  document.getElementById('dash-videos-queued').textContent = queued.length;
-  document.getElementById('dash-videos-total').textContent = total;
-
-  const h = getTodayHabits();
-  document.getElementById('dash-habit-score').textContent = `${h.score}/3`;
-
-  document.getElementById('dash-news-count').textContent = State.news.length;
-
-  const today = todayKey();
-  const rec = State.analytics.find(a => a.date === today);
-  document.getElementById('dash-velocity').textContent = rec?.velocity_score || 0;
-
-  // Queued list
-  const ql = document.getElementById('dash-queued-list');
-  if (!queued.length) {
-    ql.innerHTML = '<div class="empty-state">// queue empty. add a youtube url.</div>';
-  } else {
-    ql.innerHTML = queued.slice(0, 5).map(v => `
-      <div style="display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px dashed #ccc;font-family:'JetBrains Mono',monospace;font-size:12px;">
-        <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">&#9654; ${escapeHTML(v.title || v.embed_id)}</span>
-        <span style="color:#888;">${v.embed_id}</span>
-      </div>
-    `).join('') + (queued.length > 5 ? `<div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#888;padding:6px 0;">+ ${queued.length - 5} more</div>` : '');
-  }
-
-  // Habit list
-  const hl = document.getElementById('dash-habit-list');
-  hl.innerHTML = `
-    <div style="display:flex;flex-direction:column;gap:6px;font-family:'JetBrains Mono',monospace;font-size:13px;">
-      <div>${h.meditation ? '&#9745;' : '&#9744;'} MEDITATION</div>
-      <div>${h.calisthenics ? '&#9745;' : '&#9744;'} CALISTHENICS</div>
-      <div>${h.sleep ? '&#9745;' : '&#9744;'} SLEEP</div>
-    </div>
-  `;
-
-  // Hermes report
-  const hr = document.getElementById('dash-hermes-report');
-  if (rec?.hermes_report_text) {
-    hr.innerHTML = `<div style="font-family:'JetBrains Mono',monospace;font-size:11px;white-space:pre-wrap;line-height:1.5;">${escapeHTML(rec.hermes_report_text)}</div>`;
-  } else {
-    hr.innerHTML = '<div class="empty-state">// no report generated yet. run nightly audit in analytics.</div>';
-  }
-}
-
 // ===================== INIT =====================
 function init() {
   setupClock();
   setupTabs();
+  setupQuotes();
   setupVideoForm();
   setupHabits();
+  setupTrackers();
   setupNews();
   setupAnalytics();
 
-  // Log a habit event too
   const today = todayKey();
   const h = State.habits[today];
   if (h && h.score > 0) {
-    // Make sure analytics reflects habit score
     let rec = State.analytics.find(a => a.date === today);
     if (rec) {
       rec.velocity_score = (rec.completed_tasks_count || 0) + h.score * 2;
@@ -840,6 +1022,7 @@ function init() {
   renderNews();
   renderAnalytics();
   renderDashboard();
+  renderAllTrackers();
   updateStorageIndicator();
 }
 

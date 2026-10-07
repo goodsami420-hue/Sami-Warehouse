@@ -1304,3 +1304,328 @@ html, body {
 ::-webkit-scrollbar-track { background: var(--bg); border-left: 2px solid var(--ink-dim); }
 ::-webkit-scrollbar-thumb { background: var(--ink); border: 2px solid var(--bg); }
 ::-webkit-scrollbar-thumb:hover { background: var(--ink-soft); }
+
+/* ==================== PROGRESS CARDS (Dashboard) ==================== */
+.progress-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.progress-card {
+  background: var(--bg-card);
+  border: var(--border);
+  box-shadow: var(--shadow-hard);
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition);
+  display: flex;
+  flex-direction: column;
+}
+
+.progress-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0px var(--ink);
+}
+
+.progress-header {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-brutal);
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-bottom: var(--border);
+}
+
+.progress-card-study .progress-header { background: var(--yellow); color: var(--ink); }
+.progress-card-physical .progress-header { background: var(--green); color: var(--bg-card); }
+.progress-card-discipline .progress-header { background: var(--cyan); color: var(--ink); }
+
+.progress-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.progress-body {
+  padding: 28px 24px 24px;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.progress-percent {
+  font-family: var(--font-brutal);
+  font-size: 72px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.progress-card-study .progress-percent { color: var(--amber); }
+.progress-card-physical .progress-percent { color: var(--green); }
+.progress-card-discipline .progress-percent { color: var(--purple); }
+
+.progress-status {
+  font-family: var(--font-brutal);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border: var(--border-thin);
+  display: inline-block;
+  align-self: center;
+  background: var(--bg-card);
+  box-shadow: 3px 3px 0px var(--ink);
+}
+
+.progress-status.excellent { background: var(--green); color: var(--bg-card); border-color: var(--ink); }
+.progress-status.average { background: var(--cyan); color: var(--ink); border-color: var(--ink); }
+.progress-status.needs-focus { background: var(--red); color: var(--bg-card); border-color: var(--ink); }
+
+.progress-bar-container {
+  width: 100%;
+  height: 24px;
+  background: var(--bg);
+  border: var(--border);
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  transition: width 0.4s ease-out;
+  border-right: var(--border);
+}
+
+.progress-card-study .progress-bar-fill { background: var(--yellow); }
+.progress-card-physical .progress-bar-fill { background: var(--green); }
+.progress-card-discipline .progress-bar-fill { background: var(--cyan); }
+
+.progress-details {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ==================== TRACKER CARDS ==================== */
+.tracker-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.tracker-card {
+  background: var(--bg-card);
+  border: var(--border);
+  box-shadow: var(--shadow-hard);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.tracker-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0px var(--ink);
+}
+
+.tracker-card-study { border-top: 12px solid var(--yellow); }
+.tracker-card-physical { border-top: 12px solid var(--green); }
+.tracker-card-discipline { border-top: 12px solid var(--cyan); }
+
+.card-title-study { color: var(--amber); }
+.card-title-physical { color: var(--green); }
+.card-title-discipline { color: var(--purple); }
+
+.btn-primary-study { background: var(--yellow); color: var(--ink); border-color: var(--ink); }
+.btn-primary-study:hover { background: var(--yellow); color: var(--ink); border-color: var(--ink); box-shadow: 7px 7px 0px var(--ink); }
+.btn-primary-physical { background: var(--green); color: var(--bg-card); border-color: var(--ink); }
+.btn-primary-physical:hover { background: var(--green); color: var(--bg-card); border-color: var(--ink); box-shadow: 7px 7px 0px var(--ink); }
+.btn-primary-discipline { background: var(--cyan); color: var(--ink); border-color: var(--ink); }
+.btn-primary-discipline:hover { background: var(--cyan); color: var(--ink); border-color: var(--ink); box-shadow: 7px 7px 0px var(--ink); }
+
+.tracker-input-container {
+  display: flex;
+  gap: 8px;
+}
+
+.tracker-input-container input {
+  flex: 1;
+  padding: 10px 14px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  border: var(--border-thin);
+  background: var(--bg);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.tracker-input-container input:focus {
+  outline: none;
+  background: var(--bg-card);
+  box-shadow: 3px 3px 0px var(--ink);
+}
+
+.tracker-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+  min-height: 100px;
+}
+
+.tracker-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: var(--border-thin);
+  background: var(--bg);
+  transition: all var(--transition);
+}
+
+.tracker-item:hover {
+  background: var(--bg-card);
+}
+
+.tracker-checkbox {
+  width: 24px;
+  height: 24px;
+  border: var(--border-thin);
+  background: var(--bg-card);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-brutal);
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--ink);
+  flex-shrink: 0;
+  transition: all var(--transition);
+}
+
+.tracker-checkbox.checked {
+  background: var(--green);
+  color: var(--bg-card);
+  border-color: var(--ink);
+}
+
+.tracker-item-name {
+  flex: 1;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  word-break: break-word;
+}
+
+.tracker-item.checked .tracker-item-name {
+  text-decoration: line-through;
+  color: var(--ink-muted);
+}
+
+.tracker-item-delete {
+  background: none;
+  border: none;
+  color: var(--red);
+  font-family: var(--font-brutal);
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: all var(--transition);
+}
+
+.tracker-item-delete:hover {
+  background: var(--red);
+  color: var(--bg-card);
+}
+
+/* ==================== QUOTE BANNER ==================== */
+.quote-banner {
+  background: var(--ink);
+  border: var(--border);
+  box-shadow: var(--shadow-hard);
+  padding: 24px 28px;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: var(--bg-card);
+}
+
+.quote-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.quote-icon {
+  font-size: 40px;
+  color: var(--yellow);
+  line-height: 1;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.quote-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.quote-main {
+  font-family: var(--font-brutal);
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  color: var(--bg-card);
+  margin-bottom: 6px;
+}
+
+.quote-author {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--yellow);
+  text-transform: uppercase;
+}
+
+.quote-next-btn {
+  background: var(--yellow);
+  color: var(--ink);
+  border: var(--border-thin);
+  font-size: 12px;
+  padding: 10px 16px;
+  flex-shrink: 0;
+}
+
+.quote-next-btn:hover {
+  background: var(--yellow);
+  color: var(--ink);
+  border-color: var(--ink);
+  box-shadow: 5px 5px 0px var(--ink);
+}
+
+/* ==================== DASHBOARD HEADER ACCENT ==================== */
+.panel-header.section-title-dashboard {
+  border-bottom: 4px solid var(--yellow);
+  padding-bottom: 16px;
+  margin-bottom: 32px;
+}
