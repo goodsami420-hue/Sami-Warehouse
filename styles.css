@@ -1473,11 +1473,16 @@ html, body {
 .vocab-head { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
 .vocab-num { font-family: var(--font-brutal); font-size: 11px; font-weight: 900; color: var(--green); }
 .vocab-word { font-family: var(--font-body); font-weight: 700; font-size: 14px; }
+.vocab-pos { font-family: var(--font-mono); font-size: 10px; font-weight: 900; color: var(--ink-muted); letter-spacing: 0.06em; text-transform: uppercase; }
 .vocab-bangla { font-family: var(--font-body); font-size: 13px; color: var(--ink-soft); }
 .vocab-example { font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted); margin-top: 4px; }
 .grammar-box { display: flex; flex-direction: column; gap: 8px; }
-.grammar-rule { font-family: var(--font-body); font-weight: 700; font-size: 14px; line-height: 1.4; }
-.grammar-example { font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted); }
+.grammar-title { font-family: var(--font-brutal); font-size: 14px; font-weight: 900; letter-spacing: 0.04em; text-transform: uppercase; }
+.grammar-formula { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--ink-soft); }
+.grammar-examples { display: flex; flex-direction: column; gap: 8px; }
+.grammar-example { display: flex; flex-direction: column; gap: 4px; }
+.grammar-example-en { font-family: var(--font-body); font-size: 13px; color: var(--ink); }
+.grammar-example-bn { font-family: var(--font-body); font-size: 12px; color: var(--ink-soft); }
 .cycle-state { font-family: var(--font-mono); font-size: 11px; font-weight: 900; color: var(--green); letter-spacing: 0.08em; text-transform: uppercase; }
 
 .news-card-national { border-top: 12px solid var(--red); }

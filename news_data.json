@@ -2,57 +2,128 @@
   "updated_at": "2026-10-07",
   "wired_fact": {
     "title": "The Moon’s far side never lets Earth light it up",
-    "summary": "The Moon keeps the same face turned toward Earth, so the far side stays hidden from direct sunlight as we see it from home.",
+    "summary": "The Moon keeps the same face turned toward Earth, so the far side stays hidden from direct sunlight as we see it from home. That stable alignment means the same near-side terrain is familiar to everyone on Earth, while the opposite hemisphere remains almost always outside our line of sight. It is not a secret surface with secret weather or hidden day and night cycles; it is simply the half that faces away. That is why lunar missions and probes matter so much: they let us observe the far side directly, turning a permanent blind spot into a window onto a different view of the sky.",
     "source": "Astronomy 101"
   },
   "spaced_repetition": {
     "cycle": {
       "set_a": {
         "day1": [
-          { "word": "resilient", "bangla": "লম্বা টেকসই", "example": "A resilient team keeps moving after a setback." },
-          { "word": "meticulous", "bangla": "নিখুঁত", "example": "She keeps a meticulous checklist before every launch." },
-          { "word": "insightful", "bangla": "বুদ্ধিমত্তাপূর্ণ", "example": "The coach gave an insightful note on posture." }
+          { "word": "resilient", "pos": "adj.", "bangla": "লম্বা টেকসই", "example": "A resilient team keeps moving after a setback." },
+          { "word": "meticulous", "pos": "adj.", "bangla": "নিখুঁত", "example": "She keeps a meticulous checklist before every launch." },
+          { "word": "insightful", "pos": "adj.", "bangla": "বুদ্ধিমত্বাপূর্ণ", "example": "The coach gave an insightful note on posture." }
         ],
         "day3": [
-          { "word": "resilient", "bangla": "লম্বা টেকসই", "example": "Resilient plants recover after a drought." },
-          { "word": "meticulous", "bangla": "নিখুঁত", "example": "His notes are meticulous and easy to follow." },
-          { "word": "insightful", "bangla": "বুদ্ধিমত্তাপূর্ণ", "example": "The report is insightful and practical." }
+          { "word": "resilient", "pos": "adj.", "bangla": "লম্বা টেকসই", "example": "Resilient plants recover after a drought." },
+          { "word": "meticulous", "pos": "adj.", "bangla": "নিখুঁত", "example": "His notes are meticulous and easy to follow." },
+          { "word": "insightful", "pos": "adj.", "bangla": "বুদ্ধিমত্বাপূর্ণ", "example": "The report is insightful and practical." }
         ],
         "day7": [
-          { "word": "resilient", "bangla": "লম্বা টেকসই", "example": "Resilient habits survive bad days." },
-          { "word": "meticulous", "bangla": "নিখুঁত", "example": "The engineer made a meticulous plan." },
-          { "word": "insightful", "bangla": "বুদ্ধিমত্তাপূর্ণ", "example": "The feedback was insightful." }
+          { "word": "resilient", "pos": "adj.", "bangla": "লম্বা টেকসই", "example": "Resilient habits survive bad days." },
+          { "word": "meticulous", "pos": "adj.", "bangla": "নিখুঁত", "example": "The engineer made a meticulous plan." },
+          { "word": "insightful", "pos": "adj.", "bangla": "বুদ্ধিমত্বাপূর্ণ", "example": "The feedback was insightful." }
         ]
       },
       "grammar": [
-        { "rule": "Use the present perfect for recent finished actions when the exact time is unknown or unimportant.", "example": "I have finished the report.", "bangla_note": "সম্প্রতি শেষ হয়ে যাওয়া কাজে প্রায়ই use done / have done." }
+        {
+          "title": "Expressing Past Habits - Used to",
+          "formula": "Subject + used to + Base Verb",
+          "examples": [
+            { "en": "I used to read every morning before school.", "bn": "আমি প্রতিন্দিন স্কুলের আগের পড়ে তোমি।" },
+            { "en": "He used to play cricket with his cousins.", "bn": "সে দাদা-চাচাদের সাথে ক্রিকেট খেলত।" }
+          ]
+        }
       ]
     }
   },
   "news": {
     "national": [
-      { "title": "Measles outbreak toll rises", "summary": "Dhaka Tribune reports 643 deaths so far.", "source": "Dhaka Tribune" },
-      { "title": "Biman-Airbus deal likely today", "summary": "The Daily Star says Bangladesh may buy 10 aircraft.", "source": "The Daily Star" },
-      { "title": "World Bank warns growth may weaken", "summary": "WB says banking stress and energy woes cap growth below 4%.", "source": "Prothom Alo" },
-      { "title": "Rooppur nuclear plant nearing switch-on", "summary": "France24 reports the first reactor is expected by year-end.", "source": "France24" }
+      {
+        "title": "Measles outbreak toll rises",
+        "summary": "Dhaka Tribune reports the death toll has climbed to 643 so far. The outbreak has already spread well beyond a single district, and health officials are warning that under-vaccinated children remain the most exposed group. The key concern is not only immediate illness, but strain on hospital capacity, especially where pediatric care is already stretched. The story matters because the numbers show a public health emergency is still unfolding, not a single contained incident.",
+        "source": "Dhaka Tribune"
+      },
+      {
+        "title": "Biman-Airbus deal likely today",
+        "summary": "The Daily Star says Bangladesh may agree to buy 10 aircraft from Airbus, a move that would modernize Biman’s fleet and expand long-haul options. The deal is important because airlines age quickly, and a newer fleet can lower fuel burn, improve reliability, and support more frequent service to high-demand routes. The timing matters as the government looks for a visible boost to tourism, trade, and international mobility. If completed, it would also change the airline’s competitive position against regional carriers.",
+        "source": "The Daily Star"
+      },
+      {
+        "title": "World Bank warns growth may weaken",
+        "summary": "The World Bank says banking stress and energy pressures are now capping Bangladesh’s growth below 4 percent. That is a big deal because slower growth usually means weaker tax revenue, fewer jobs, and more pressure on wages and public spending. The warning is not just about one quarter; it signals a drag on the whole economy if reforms stall or external costs keep climbing. For households, the impact is likely to show up as slower hiring and higher living costs.",
+        "source": "Prothom Alo"
+      },
+      {
+        "title": "Rooppur nuclear plant nearing switch-on",
+        "summary": "France24 reports the first reactor is expected to start by year-end, marking a major milestone for Bangladesh’s first nuclear power project. The plant is important because it adds a steady baseload source that can run continuously without the fuel logistics of coal or gas. The political and engineering stakes are high because delayed startups can stretch budgets for years and delay the broader grid benefits. For the country, it is a bet on long-term energy independence.",
+        "source": "France24"
+      }
     ],
     "global": [
-      { "title": "Israel marks three years since Hamas attack", "summary": "Reuters and CNN report memorials and high alert.", "source": "Reuters / CNN" },
-      { "title": "Russian plague lab death sparks caution", "summary": "Global media report quarantine and low epidemic risk.", "source": "CNN / Global News" },
-      { "title": "France rocked by student protests", "summary": "Teachers and students clash over school resources.", "source": "BBC / The Guardian" },
-      { "title": "U.S. arrests second suspect in Canada shooting", "summary": "The Guardian says the arrest was planned with ChatGPT.", "source": "The Guardian" }
+      {
+        "title": "Israel marks three years since Hamas attack",
+        "summary": "Reuters and CNN report memorials and heightened alerts across Israel as three years pass since the October 7 attack. The day matters because it marks the turning point that triggered a wider regional war, reshaped Israeli politics, and deepened the humanitarian crisis in Gaza. Leaders and families are gathering to remember casualties, while the security environment remains tense and the path to a durable ceasefire is still unclear. The anniversary is a reminder that the shock of the attack still defines the region’s current political landscape.",
+        "source": "Reuters / CNN"
+      },
+      {
+        "title": "Russian plague lab death sparks caution",
+        "summary": "Global media report a fatal laboratory incident in Russia and a quick quarantine response. Officials say the epidemic risk is low, but the episode raises questions about biosafety standards and how quickly pathogens can escape during research work. The significance is not the size of the outbreak so far, but the reminder that even well-contained labs can become high-consequence incidents. Public trust and international monitoring will matter if any further cases appear.",
+        "source": "CNN / Global News"
+      },
+      {
+        "title": "France rocked by student protests",
+        "summary": "BBC and The Guardian report clashes over school resources and funding. The issue matters because education budgets shape teacher pay, class sizes, and the quality of basic services for years to come. Protests like this often turn into broader political fights about spending priorities and social safety nets. If the unrest spreads, it could influence elections, budget negotiations, and trust in government institutions.",
+        "source": "BBC / The Guardian"
+      },
+      {
+        "title": "U.S. arrests second suspect in Canada shooting",
+        "summary": "The Guardian says a second suspect in a shooting linked to Canada was arrested after planning assistance from ChatGPT. The case is significant because it shows how conversational AI can be abused in real-world investigations, even when the tool is meant to be generic. Authorities say the arrest was coordinated after intelligence sharing and behavioral review. The story raises fresh questions about platform safety, misuse detection, and the line between creative brainstorming and actionable planning.",
+        "source": "The Guardian"
+      }
     ],
     "innovation": [
-      { "title": "Mars may have once had an ocean", "summary": "ScienceDaily says a chaotic valley may be a clue.", "source": "ScienceDaily" },
-      { "title": "NASA tests a powerful new thruster", "summary": "Space Daily says it could help missions to Mars.", "source": "ScienceDaily" },
-      { "title": "Webb reveals a scorching super-Earth", "summary": "A Mercury-like world looks unusually hot and close-in.", "source": "ScienceDaily" },
-      { "title": "Creatine may help muscle even without exercise", "summary": "A 12-week study found gains in middle-aged adults.", "source": "ScienceDaily" }
+      {
+        "title": "Mars may have once had an ocean",
+        "summary": "ScienceDaily says a chaotic valley may be a clue that Mars once hosted a broad ocean. The finding matters because ancient water is the best shortcut to understanding habitability, geology, and climate stability on another planet. If the valley truly marks an ancient shoreline, it changes how scientists read Mars’ water history and where to search for preserved signatures of life. The result also strengthens the case for future rovers and sample-return missions.",
+        "source": "ScienceDaily"
+      },
+      {
+        "title": "NASA tests a powerful new thruster",
+        "summary": "Space Daily says NASA is testing a powerful new thruster that could help future missions travel faster and cheaper, especially on longer flights to Mars. The importance is practical: better propulsion can cut mission duration, reduce fuel needs, and increase the payload a spacecraft can carry. That matters for both science missions and any future crewed exploration effort. A successful test could become a building block for the next generation of exploration vehicles.",
+        "source": "ScienceDaily"
+      },
+      {
+        "title": "Webb reveals a scorching super-Earth",
+        "summary": "The James Webb Space Telescope has spotted a scorching super-Earth that behaves more like Mercury than a typical Earth-sized world. That matters because super-Earths are common around other stars, and this one gives researchers a new clue about how planets form and evolve near hot stars. The planet’s extreme environment is a useful contrast case for climate theory. It may also reshape models for which close-in worlds can hold onto atmospheres long enough to matter.",
+        "source": "ScienceDaily"
+      },
+      {
+        "title": "Creatine may help muscle even without exercise",
+        "summary": "A 12-week study found that creatine can improve muscle outcomes even in middle-aged adults who do not train heavily. That is useful because creatine is usually tested in people already training hard, so this result expands the conversation about whether supplementation helps with age-related muscle loss in a broader population. The story matters for aging, recovery, and metabolic health. It also invites follow-up on dosage, safety, and whether the effect is large enough to justify routine use.",
+        "source": "ScienceDaily"
+      }
     ],
     "ai_frontier": [
-      { "title": "GPT-5.6 family splits into Sol, Terra and Luna", "summary": "Sol is the frontier tier, Terra cheaper, Luna fast.", "source": "ThursdAI" },
-      { "title": "Claude Opus 4.8 pushes agentic coding", "summary": "Anthropic reports gains on coding and reasoning benchmarks.", "source": "gpt.buzz" },
-      { "title": "Gemini 3.5 and Omni expand Google's stack", "summary": "Google adds multimodal and agentic capabilities.", "source": "gpt.buzz" },
-      { "title": "Grok 4.5 trains on Cursor agent traces", "summary": "SpaceXAI says it is optimized for coding workflows.", "source": "ThursdAI" }
+      {
+        "title": "GPT-5.6 family splits into Sol, Terra and Luna",
+        "summary": "ThursdAI says OpenAI has split its next model family into Sol, Terra, and Luna, with Sol as the frontier tier, Terra as the cheaper option, and Luna as the fast tier. That tiering matters because it tells customers which model fits which workload: top reasoning, everyday throughput, or low-latency inference. The split also suggests a mature product strategy where one model family can serve multiple cost and speed profiles. The impact is clearer pricing and easier procurement for teams that need different performance bands.",
+        "source": "ThursdAI"
+      },
+      {
+        "title": "Claude Opus 4.8 pushes agentic coding",
+        "summary": "Anthropic reports gains in coding and reasoning benchmarks for Claude Opus 4.8. The update matters because coding tasks are one of the clearest ways to judge whether a model can actually act, not just explain. The company frames this as a step toward more autonomous software development, where the model can navigate a repo, make changes, and handle follow-up edits with less handholding. The practical impact is higher confidence for teams that want agents in code reviews, debugging, or maintenance work.",
+        "source": "gpt.buzz"
+      },
+      {
+        "title": "Gemini 3.5 and Omni expand Google’s stack",
+        "summary": "Google adds multimodal and agentic capabilities across Gemini 3.5 and Omni, which matters because Google is trying to position these models as general-purpose assistants across text, images, and other inputs. The significance is not just feature breadth, but the shift toward models that can reason across multiple modalities and act in workflows instead of only answering questions. The result is a broader platform bet that can compete with other frontier stacks on both breadth and integration. For developers, it opens more ways to build products around mixed-media reasoning.",
+        "source": "gpt.buzz"
+      },
+      {
+        "title": "Grok 4.5 trains on Cursor agent traces",
+        "summary": "SpaceXAI says Grok 4.5 is optimized for coding workflows using Cursor agent traces. The story matters because it shows a different training strategy focused on real agentic behavior in code environments rather than generic assistant tasks. The impact is a model that should be better at tool use, planning, and long-running coding sessions. If the approach works, it could become a strong template for building agents that operate inside developer environments rather than only chatting about code.",
+        "source": "ThursdAI"
+      }
     ]
   }
 }
