@@ -256,8 +256,9 @@ function renderDailyIntel() {
     wiredBadge.textContent = '80/20 FACT';
   }
 
+  const activeSet = getActiveSpacedSet();
   if (vocabList) {
-    vocabList.innerHTML = DAILY_INTEL.spacedRepetition.vocabulary.map((v, i) => `
+    vocabList.innerHTML = activeSet.vocabulary.map((v, i) => `
       <div class="vocab-item">
         <div class="vocab-head"><span class="vocab-num">${String(i + 1).padStart(2, '0')}</span><span class="vocab-word">${escapeHTML(v.word)}</span></div>
         <div class="vocab-bangla">${escapeHTML(v.bangla)}</div>
@@ -267,13 +268,46 @@ function renderDailyIntel() {
   }
 
   if (grammarRule && grammarExample) {
-    grammarRule.textContent = DAILY_INTEL.spacedRepetition.grammar.rule;
-    grammarExample.textContent = DAILY_INTEL.spacedRepetition.grammar.example;
+    grammarRule.textContent = activeSet.grammar.rule;
+    grammarExample.textContent = activeSet.grammar.example;
   }
 
   if (cycleState) {
-    cycleState.textContent = `DAY 1 NEW · DAY 3 REVIEW · DAY 7 FINAL`;
+    cycleState.textContent = activeSet.stageLabel;
   }
+}
+
+function getActiveSpacedSet() {
+  const sets = DAILY_INTEL.spacedRepetition.vocabulary.map((v, i) => ({
+    id: `set-${i + 1}`,
+    vocabulary: [v],
+    grammar: DAILY_INTEL.spacedRepetition.grammar,
+  }));
+  const today = todayKey();
+  if (!State.spacedSets) State.spacedSets = {};
+  if (!State.spacedSets[State.spacedCursor]) {
+    State.spacedSets[State.spacedCursor] = { introduced: today };
+  }
+  const introduced = new Date(State.spacedSets[State.spacedCursor].introduced + 'T00:00:00');
+  const now = new Date(today + 'T00:00:00');
+  const dayOffset = Math.floor((now - introduced) / 86400000);
+  if (dayOffset < 0) {
+    State.spacedSets[State.spacedCursor] = { introduced: today };
+    return { vocabulary: sets[0].vocabulary, grammar: sets[0].grammar, stageLabel: 'DAY 1 NEW' };
+  }
+  if (dayOffset < 3) {
+    return { vocabulary: sets[0].vocabulary, grammar: sets[0].grammar, stageLabel: 'DAY 1 NEW' };
+  }
+  if (dayOffset < 7) {
+    return { vocabulary: sets[0].vocabulary, grammar: sets[0].grammar, stageLabel: 'DAY 3 REVIEW' };
+  }
+  return { vocabulary: sets[0].vocabulary, grammar: sets[0].grammar, stageLabel: 'DAY 7 FINAL' };
+}
+
+function advanceSpacedCursor() {
+  State.spacedCursor = (State.spacedCursor + 1) % DAILY_INTEL.spacedRepetition.vocabulary.length;
+  State.spacedSets[State.spacedCursor] = { introduced: todayKey() };
+  persist();
 }
 
 function setupTabs() {
