@@ -783,9 +783,9 @@ function init() {
   setupVideoForm();
   setupHabits();
   setupTrackers();
-  initChart('study-momentum-chart', 'study', '#F59E0B');
-  initChart('physical-momentum-chart', 'physical', '#10B981');
-  initChart('discipline-momentum-chart', 'discipline', '#8B5CF6');
+  initChart('studyChart', 'study', '#F59E0B');
+  initChart('physicalChart', 'physical', '#10B981');
+  initChart('disciplineChart', 'discipline', '#8B5CF6');
   setupNews();
   setupAnalytics();
   const today = todayKey();

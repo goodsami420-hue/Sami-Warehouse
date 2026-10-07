@@ -64,7 +64,7 @@
           <div class="chart-metric"><span class="metric-label">TODAY</span><span class="metric-value" id="study-momentum-today">0%</span></div>
           <div class="chart-metric"><span class="metric-label">TREND</span><span class="metric-value" id="study-momentum-trend">0</span></div>
         </div>
-        <div class="chart-container"><canvas id="study-momentum-chart"></canvas></div>
+        <div class="chart-container"><canvas id="studyChart"></canvas></div>
       </div>
       <div class="chart-card chart-card-physical">
         <div class="card-head"><div class="card-title card-title-physical">PHYSICAL PERFORMANCE</div><div class="chart-status" id="physical-momentum-status">FLAT</div></div>
@@ -72,7 +72,7 @@
           <div class="chart-metric"><span class="metric-label">TODAY</span><span class="metric-value" id="physical-momentum-today">0%</span></div>
           <div class="chart-metric"><span class="metric-label">TREND</span><span class="metric-value" id="physical-momentum-trend">0</span></div>
         </div>
-        <div class="chart-container"><canvas id="physical-momentum-chart"></canvas></div>
+        <div class="chart-container"><canvas id="physicalChart"></canvas></div>
       </div>
       <div class="chart-card chart-card-discipline">
         <div class="card-head"><div class="card-title card-title-discipline">DISCIPLINE CONSISTENCY</div><div class="chart-status" id="discipline-momentum-status">FLAT</div></div>
@@ -80,7 +80,7 @@
           <div class="chart-metric"><span class="metric-label">TODAY</span><span class="metric-value" id="discipline-momentum-today">0%</span></div>
           <div class="chart-metric"><span class="metric-label">TREND</span><span class="metric-value" id="discipline-momentum-trend">0</span></div>
         </div>
-        <div class="chart-container"><canvas id="discipline-momentum-chart"></canvas></div>
+        <div class="chart-container"><canvas id="disciplineChart"></canvas></div>
       </div>
     </div>
     <div class="summary-grid">
@@ -109,7 +109,7 @@
     <div class="log-card log-card-physical">
       <div class="card-head"><div class="card-title card-title-physical">DAILY PHYSICAL INPUT</div><div class="card-actions"><span class="count-badge" id="physical-open-count">0 OPEN</span><button class="btn btn-primary-physical" id="add-physical-btn">+ ADD WORKOUT</button></div></div>
       <div class="tracker-input-container"><input type="text" id="physical-workout-input" placeholder="e.g., Pushups, Planks, Calisthenics Routine"></div>
-      <div class="tracker-list" id="physical-workout-list"><div class="empty-state">// add workouts to track progress.</div></div>
+      <div class="tracker-list" id="physical-task-list"><div class="empty-state">// add workouts to track progress.</div></div>
     </div>
   </section>
   <section class="tab-panel" id="tab-discipline-log">
@@ -117,7 +117,7 @@
     <div class="log-card log-card-discipline">
       <div class="card-head"><div class="card-title card-title-discipline">DAILY DISCIPLINE INPUT</div><div class="card-actions"><span class="count-badge" id="discipline-open-count">0 OPEN</span><button class="btn btn-primary-discipline" id="add-discipline-btn">+ ADD HABIT</button></div></div>
       <div class="tracker-input-container"><input type="text" id="discipline-habit-input" placeholder="e.g., Fajr Prayer, On-time Sleep, Screen Lock, Focus Mode"></div>
-      <div class="tracker-list" id="discipline-habit-list"><div class="empty-state">// add discipline habits to track progress.</div></div>
+      <div class="tracker-list" id="discipline-task-list"><div class="empty-state">// add discipline habits to track progress.</div></div>
     </div>
   </section>
   <section class="tab-panel" id="tab-videos">
