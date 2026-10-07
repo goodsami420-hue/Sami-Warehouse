@@ -1456,7 +1456,45 @@ html, body {
 .log-card-physical { border-top: 12px solid var(--green); }
 .log-card-discipline { border-top: 12px solid var(--cyan); }
 
+.intel-zone { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 20px; }
+.intel-card { background: var(--bg-card); border: var(--border); box-shadow: var(--shadow-hard); padding: 20px; }
+.intel-card-wired { border-top: 12px solid var(--yellow); }
+.intel-card-spaced { border-top: 12px solid var(--green); }
+.intel-body { display: flex; flex-direction: column; gap: 12px; }
+.intel-title { font-family: var(--font-brutal); font-weight: 900; font-size: 22px; letter-spacing: 0.02em; text-transform: uppercase; line-height: 1.1; }
+.intel-summary { font-family: var(--font-body); font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
+.intel-source { font-family: var(--font-mono); font-size: 10px; font-weight: 900; letter-spacing: 0.08em; color: var(--ink-muted); text-transform: uppercase; }
+.card-badge { font-family: var(--font-brutal); font-size: 10px; font-weight: 900; letter-spacing: 0.08em; padding: 4px 8px; border: var(--border-thin); background: var(--ink); color: var(--yellow); text-transform: uppercase; }
+.spaced-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.spaced-block { background: var(--bg); border: var(--border-thin); padding: 16px; }
+.spaced-label { font-family: var(--font-brutal); font-size: 11px; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 10px; }
+.vocab-list { display: flex; flex-direction: column; gap: 10px; }
+.vocab-item { border: var(--border-thin); background: var(--bg-card); padding: 10px 12px; }
+.vocab-head { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.vocab-num { font-family: var(--font-brutal); font-size: 11px; font-weight: 900; color: var(--green); }
+.vocab-word { font-family: var(--font-body); font-weight: 700; font-size: 14px; }
+.vocab-bangla { font-family: var(--font-body); font-size: 13px; color: var(--ink-soft); }
+.vocab-example { font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted); margin-top: 4px; }
+.grammar-box { display: flex; flex-direction: column; gap: 8px; }
+.grammar-rule { font-family: var(--font-body); font-weight: 700; font-size: 14px; line-height: 1.4; }
+.grammar-example { font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted); }
+.cycle-state { font-family: var(--font-mono); font-size: 11px; font-weight: 900; color: var(--green); letter-spacing: 0.08em; text-transform: uppercase; }
+
+.news-card-national { border-top: 12px solid var(--red); }
+.news-card-global { border-top: 12px solid var(--cyan); }
+.news-card-innovation { border-top: 12px solid var(--purple); }
+.news-card-ai { border-top: 12px solid var(--amber); }
+
+.news-card .card-title { font-size: 13px; }
+.news-card .news-item { margin-bottom: 10px; }
+.news-card .news-item:last-child { margin-bottom: 0; }
+.news-card .news-title { font-size: 14px; }
+.news-card .news-source { font-size: 10px; }
+.news-card .news-bullets li { font-size: 13px; }
+
 @media (max-width: 980px) {
   .chart-grid { grid-template-columns: 1fr; }
   .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .intel-zone { grid-template-columns: 1fr; }
+  .spaced-grid { grid-template-columns: 1fr; }
 }

@@ -92,6 +92,41 @@
       <button class="btn btn-primary-physical" data-jump="physical-log">OPEN PHYSICAL LOG</button>
       <button class="btn btn-primary-discipline" data-jump="discipline-log">OPEN DISCIPLINE LOG</button>
     </div>
+    <div class="intel-zone" id="intel-zone">
+      <div class="intel-card intel-card-wired">
+        <div class="card-head">
+          <div class="card-title card-title-wired">WIRED KNOWLEDGE BOX</div>
+          <span class="card-badge" id="wired-badge">DAILY FACT</span>
+        </div>
+        <div class="intel-body">
+          <div class="intel-title" id="wired-title">—</div>
+          <div class="intel-summary" id="wired-summary">—</div>
+          <div class="intel-source" id="wired-source">—</div>
+        </div>
+      </div>
+      <div class="intel-card intel-card-spaced">
+        <div class="card-head">
+          <div class="card-title card-title-spaced">SPACED REPETITION ENGINE</div>
+          <span class="card-badge" id="spaced-badge">1-3-7 DAY CYCLE</span>
+        </div>
+        <div class="intel-body">
+          <div class="spaced-grid">
+            <div class="spaced-block">
+              <div class="spaced-label">VOCABULARY</div>
+              <div class="vocab-list" id="vocab-list"></div>
+            </div>
+            <div class="spaced-block">
+              <div class="spaced-label">SPEAKING GRAMMAR RULE</div>
+              <div class="grammar-box">
+                <div class="grammar-rule" id="grammar-rule">—</div>
+                <div class="grammar-example" id="grammar-example">—</div>
+              </div>
+              <div class="cycle-state" id="cycle-state">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
   <section class="tab-panel" id="tab-study-log">
     <div class="panel-header"><h2 class="section-title section-title-study">STUDY LOG</h2><div class="section-sub">// ADD STUDY TARGETS & CHECK OFF COMPLETION</div></div>
@@ -127,9 +162,33 @@
     <div class="content-card card-video"><div class="card-head"><div class="card-title">COMPLETED ARCHIVE</div><div class="card-actions"><button class="mini-btn" id="clear-archive">Clear</button></div></div><div id="video-archive" class="queue-list"><div class="empty-state">// no completed videos yet.</div></div></div>
   </section>
   <section class="tab-panel" id="tab-news">
-    <div class="panel-header"><h2 class="section-title section-title-news">NEWS DIGEST</h2><div class="section-sub">// TOP AI BREAKTHROUGHS &amp; SCIENTIFIC DISCOVERIES</div></div>
-    <div class="content-card card-news"><div class="card-head"><div class="card-title">CYCLE CONTROLS</div><div class="card-actions"><button class="btn btn-primary-news" id="run-audit-btn">RUN NIGHTLY AUDIT</button><button class="btn btn-danger" id="clear-news">CLEAR CYCLE</button></div></div><div class="audit-meta"><div class="meta-line"><span class="meta-label">LAST AUDIT:</span> <span id="last-audit-time">never</span></div><div class="meta-line"><span class="meta-label">SOURCES:</span> arXiv &middot; MIT News &middot; Nature &middot; DeepMind Blog</div><div class="meta-line"><span class="meta-label">STATUS:</span> <span id="audit-status">IDLE</span></div></div></div>
-    <div id="news-list" class="news-list"><div class="empty-state">// no news items yet. run the nightly audit.</div></div>
+    <div class="panel-header"><h2 class="section-title section-title-news">NEWS DIGEST</h2><div class="section-sub">// 4-CATEGORY DAILY UPDATE &amp; NIGHTLY AUDIT</div></div>
+    <div class="content-card card-news">
+      <div class="card-head"><div class="card-title">CYCLE CONTROLS</div><div class="card-actions"><button class="btn btn-primary-news" id="run-audit-btn">RUN NIGHTLY AUDIT</button><button class="btn btn-danger" id="clear-news">CLEAR CYCLE</button></div></div>
+      <div class="audit-meta">
+        <div class="meta-line"><span class="meta-label">LAST AUDIT:</span> <span id="last-audit-time">never</span></div>
+        <div class="meta-line"><span class="meta-label">SOURCES:</span> arXiv &middot; local curated feed &middot; model briefs</div>
+        <div class="meta-line"><span class="meta-label">STATUS:</span> <span id="audit-status">IDLE</span></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="content-card card-news news-card news-card-national">
+        <div class="card-head"><div class="card-title">NATIONAL NEWS</div><div class="card-actions"><span class="count-badge" id="news-count-national">0</span></div></div>
+        <div id="news-national" class="news-list"></div>
+      </div>
+      <div class="content-card card-news news-card news-card-global">
+        <div class="card-head"><div class="card-title">GLOBAL NEWS</div><div class="card-actions"><span class="count-badge" id="news-count-global">0</span></div></div>
+        <div id="news-global" class="news-list"></div>
+      </div>
+      <div class="content-card card-news news-card news-card-innovation">
+        <div class="card-head"><div class="card-title">INNOVATION & ACADEMIC RESEARCH</div><div class="card-actions"><span class="count-badge" id="news-count-innovation">0</span></div></div>
+        <div id="news-innovation" class="news-list"></div>
+      </div>
+      <div class="content-card card-news news-card news-card-ai">
+        <div class="card-head"><div class="card-title">AI FRONTIER</div><div class="card-actions"><span class="count-badge" id="news-count-ai">0</span></div></div>
+        <div id="news-ai" class="news-list"></div>
+      </div>
+    </div>
   </section>
 </main>
 <footer class="main-footer"><div class="footer-inner"><div class="footer-left"><span class="footer-brand">SAMI WAREHOUSE</span><span class="footer-dot">&middot;</span><span>v1.5</span><span class="footer-dot">&middot;</span><span>LOCAL STORAGE ENGINE</span></div><div class="footer-right"><span id="storage-status">STORE: OK</span><span class="footer-dot">&middot;</span><span id="storage-size">0 KB</span></div></div></footer>

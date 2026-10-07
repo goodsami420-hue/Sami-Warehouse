@@ -15,6 +15,8 @@ const STORE = {
   studyTasks: 'sw_study_tasks',
   physicalTasks: 'sw_physical_tasks',
   disciplineTasks: 'sw_discipline_tasks',
+  spacedSets: 'sw_spaced_sets',
+  spacedCursor: 'sw_spaced_cursor',
 };
 
 function todayKey(d) {
@@ -82,6 +84,53 @@ const State = {
   disciplineTasks: load(STORE.disciplineTasks, {}),
   quoteIndex: 0,
   charts: {},
+  spacedSets: load(STORE.spacedSets, {}),
+  spacedCursor: load(STORE.spacedCursor, 0),
+};
+
+const DAILY_INTEL = {
+  wiredFact: {
+    title: 'The Moon’s far side never lets Earth light it up',
+    summary: 'The Moon keeps the same face turned toward Earth, so the far side stays hidden from direct sunlight as we see it from home.',
+    source: 'Astronomy 101'
+  },
+  spacedRepetition: {
+    vocabulary: [
+      { word: 'resilient', bangla: 'লম্বা টেকসই', example: 'A resilient team keeps moving after a setback.' },
+      { word: 'meticulous', bangla: 'নিখুঁত', example: 'She keeps a meticulous checklist before every launch.' },
+      { word: 'insightful', bangla: 'বুদ্ধিমত্তাপূর্ণ', example: 'The coach gave an insightful note on posture.' }
+    ],
+    grammar: {
+      rule: 'Use the present perfect for recent finished actions when the exact time is unknown or unimportant.',
+      example: 'I have finished the report.'
+    }
+  },
+  news: {
+    national: [
+      { title: 'Measles outbreak toll rises', summary: 'Dhaka Tribune reports 643 deaths so far.', source: 'Dhaka Tribune' },
+      { title: 'Biman-Airbus deal likely today', summary: 'The Daily Star says Bangladesh may buy 10 aircraft.', source: 'The Daily Star' },
+      { title: 'World Bank warns growth may weaken', summary: 'WB says banking stress and energy woes cap growth below 4%.', source: 'Prothom Alo' },
+      { title: 'Rooppur nuclear plant nearing switch-on', summary: 'France24 reports the first reactor is expected by year-end.', source: 'France24' }
+    ],
+    global: [
+      { title: 'Israel marks three years since Hamas attack', summary: 'Reuters and CNN report memorials and high alert.', source: 'Reuters / CNN' },
+      { title: 'Russian plague lab death sparks caution', summary: 'Global media report quarantine and low epidemic risk.', source: 'CNN / Global News' },
+      { title: 'France rocked by student protests', summary: 'Teachers and students clash over school resources.', source: 'BBC / The Guardian' },
+      { title: 'U.S. arrests second suspect in Canada shooting', summary: 'The Guardian says the arrest was planned with ChatGPT.', source: 'The Guardian' }
+    ],
+    innovation: [
+      { title: 'Mars may have once had an ocean', summary: 'ScienceDaily says a chaotic valley may be a clue.', source: 'ScienceDaily' },
+      { title: 'NASA tests a powerful new thruster', summary: 'Space Daily says it could help missions to Mars.', source: 'ScienceDaily' },
+      { title: 'Webb reveals a scorching super-Earth', summary: 'A Mercury-like world looks unusually hot and close-in.', source: 'ScienceDaily' },
+      { title: 'Creatine may help muscle even without exercise', summary: 'A 12-week study found gains in middle-aged adults.', source: 'ScienceDaily' }
+    ],
+    aiFrontier: [
+      { title: 'GPT-5.6 family splits into Sol, Terra and Luna', summary: 'Sol is the frontier tier, Terra cheaper, Luna fast.', source: 'ThursdAI' },
+      { title: 'Claude Opus 4.8 pushes agentic coding', summary: 'Anthropic reports gains on coding and reasoning benchmarks.', source: 'gpt.buzz' },
+      { title: 'Gemini 3.5 and Omni expand Google’s stack', summary: 'Google adds multimodal and agentic capabilities.', source: 'gpt.buzz' },
+      { title: 'Grok 4.5 trains on Cursor agent traces', summary: 'SpaceXAI says it is optimized for coding workflows.', source: 'ThursdAI' }
+    ]
+  }
 };
 
 function persist() {
@@ -187,6 +236,44 @@ function renderQuote() {
   const quote = QUOTES[State.quoteIndex];
   main.textContent = `"${quote.text}"`;
   author.textContent = `— ${quote.author}`;
+}
+
+function renderDailyIntel() {
+  const wiredTitle = document.getElementById('wired-title');
+  const wiredSummary = document.getElementById('wired-summary');
+  const wiredSource = document.getElementById('wired-source');
+  const wiredBadge = document.getElementById('wired-badge');
+  const spacedBadge = document.getElementById('spaced-badge');
+  const vocabList = document.getElementById('vocab-list');
+  const grammarRule = document.getElementById('grammar-rule');
+  const grammarExample = document.getElementById('grammar-example');
+  const cycleState = document.getElementById('cycle-state');
+
+  if (wiredTitle && wiredSummary && wiredSource && wiredBadge) {
+    wiredTitle.textContent = DAILY_INTEL.wiredFact.title;
+    wiredSummary.textContent = DAILY_INTEL.wiredFact.summary;
+    wiredSource.textContent = `SOURCE: ${DAILY_INTEL.wiredFact.source}`;
+    wiredBadge.textContent = '80/20 FACT';
+  }
+
+  if (vocabList) {
+    vocabList.innerHTML = DAILY_INTEL.spacedRepetition.vocabulary.map((v, i) => `
+      <div class="vocab-item">
+        <div class="vocab-head"><span class="vocab-num">${String(i + 1).padStart(2, '0')}</span><span class="vocab-word">${escapeHTML(v.word)}</span></div>
+        <div class="vocab-bangla">${escapeHTML(v.bangla)}</div>
+        <div class="vocab-example">${escapeHTML(v.example)}</div>
+      </div>
+    `).join('');
+  }
+
+  if (grammarRule && grammarExample) {
+    grammarRule.textContent = DAILY_INTEL.spacedRepetition.grammar.rule;
+    grammarExample.textContent = DAILY_INTEL.spacedRepetition.grammar.example;
+  }
+
+  if (cycleState) {
+    cycleState.textContent = `DAY 1 NEW · DAY 3 REVIEW · DAY 7 FINAL`;
+  }
 }
 
 function setupTabs() {
@@ -505,6 +592,7 @@ function renderDashboard() {
   updateChart('study', '#F59E0B', '#EF4444');
   updateChart('physical', '#10B981', '#EF4444');
   updateChart('discipline', '#8B5CF6', '#EF4444');
+  renderDailyIntel();
   const studyTasks = getTodayTasks('study');
   const physicalTasks = getTodayTasks('physical');
   const disciplineTasks = getTodayTasks('discipline');
@@ -568,18 +656,27 @@ async function runNightlyAudit() {
 }
 
 function renderNews() {
-  const list = document.getElementById('news-list');
   const statusEl = document.getElementById('audit-status');
   const timeEl = document.getElementById('last-audit-time');
   if (State.meta.last_audit_at) {
     timeEl.textContent = fmtTime(State.meta.last_audit_at);
     statusEl.textContent = `LAST AUDIT: ${fmtDate(State.meta.last_audit_at)}`;
   }
-  if (!State.news.length) {
-    list.innerHTML = '<div class="empty-state">// no news items yet. run the nightly audit.</div>';
-    return;
-  }
-  list.innerHTML = State.news.map((n, i) => `<div class="news-item"><div class="news-item-head"><div class="news-num">${String(i + 1).padStart(2, '0')}</div><div class="news-title">${escapeHTML(n.title)}</div><div class="news-source">${escapeHTML(n.source)}</div></div><ul class="news-bullets">${n.summary_bullets.map(b => `<li>${escapeHTML(b)}</li>`).join('')}</ul></div>`).join('');
+  const renderCategory = (containerId, countId, items) => {
+    const list = document.getElementById(containerId);
+    const count = document.getElementById(countId);
+    if (!list) return;
+    if (count) count.textContent = items.length;
+    if (!items.length) {
+      list.innerHTML = '<div class="empty-state">// no items in this category yet.</div>';
+      return;
+    }
+    list.innerHTML = items.map((n, i) => `<div class="news-item"><div class="news-item-head"><div class="news-num">${String(i + 1).padStart(2, '0')}</div><div class="news-title">${escapeHTML(n.title)}</div><div class="news-source">${escapeHTML(n.source)}</div></div><ul class="news-bullets"><li>${escapeHTML(n.summary)}</li></ul></div>`).join('');
+  };
+  renderCategory('news-national', 'news-count-national', DAILY_INTEL.news.national);
+  renderCategory('news-global', 'news-count-global', DAILY_INTEL.news.global);
+  renderCategory('news-innovation', 'news-count-innovation', DAILY_INTEL.news.innovation);
+  renderCategory('news-ai', 'news-count-ai', DAILY_INTEL.news.aiFrontier);
 }
 
 function setupNews() {

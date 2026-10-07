@@ -1,0 +1,58 @@
+{
+  "updated_at": "2026-10-07",
+  "wired_fact": {
+    "title": "The Moon’s far side never lets Earth light it up",
+    "summary": "The Moon keeps the same face turned toward Earth, so the far side stays hidden from direct sunlight as we see it from home.",
+    "source": "Astronomy 101"
+  },
+  "spaced_repetition": {
+    "cycle": {
+      "set_a": {
+        "day1": [
+          { "word": "resilient", "bangla": "লম্বা টেকসই", "example": "A resilient team keeps moving after a setback." },
+          { "word": "meticulous", "bangla": "নিখুঁত", "example": "She keeps a meticulous checklist before every launch." },
+          { "word": "insightful", "bangla": "বুদ্ধিমত্তাপূর্ণ", "example": "The coach gave an insightful note on posture." }
+        ],
+        "day3": [
+          { "word": "resilient", "bangla": "লম্বা টেকসই", "example": "Resilient plants recover after a drought." },
+          { "word": "meticulous", "bangla": "নিখুঁত", "example": "His notes are meticulous and easy to follow." },
+          { "word": "insightful", "bangla": "বুদ্ধিমত্তাপূর্ণ", "example": "The report is insightful and practical." }
+        ],
+        "day7": [
+          { "word": "resilient", "bangla": "লম্বা টেকসই", "example": "Resilient habits survive bad days." },
+          { "word": "meticulous", "bangla": "নিখুঁত", "example": "The engineer made a meticulous plan." },
+          { "word": "insightful", "bangla": "বুদ্ধিমত্তাপূর্ণ", "example": "The feedback was insightful." }
+        ]
+      },
+      "grammar": [
+        { "rule": "Use the present perfect for recent finished actions when the exact time is unknown or unimportant.", "example": "I have finished the report.", "bangla_note": "সম্প্রতি শেষ হয়ে যাওয়া কাজে প্রায়ই use done / have done." }
+      ]
+    }
+  },
+  "news": {
+    "national": [
+      { "title": "Measles outbreak toll rises", "summary": "Dhaka Tribune reports 643 deaths so far.", "source": "Dhaka Tribune" },
+      { "title": "Biman-Airbus deal likely today", "summary": "The Daily Star says Bangladesh may buy 10 aircraft.", "source": "The Daily Star" },
+      { "title": "World Bank warns growth may weaken", "summary": "WB says banking stress and energy woes cap growth below 4%.", "source": "Prothom Alo" },
+      { "title": "Rooppur nuclear plant nearing switch-on", "summary": "France24 reports the first reactor is expected by year-end.", "source": "France24" }
+    ],
+    "global": [
+      { "title": "Israel marks three years since Hamas attack", "summary": "Reuters and CNN report memorials and high alert.", "source": "Reuters / CNN" },
+      { "title": "Russian plague lab death sparks caution", "summary": "Global media report quarantine and low epidemic risk.", "source": "CNN / Global News" },
+      { "title": "France rocked by student protests", "summary": "Teachers and students clash over school resources.", "source": "BBC / The Guardian" },
+      { "title": "U.S. arrests second suspect in Canada shooting", "summary": "The Guardian says the arrest was planned with ChatGPT.", "source": "The Guardian" }
+    ],
+    "innovation": [
+      { "title": "Mars may have once had an ocean", "summary": "ScienceDaily says a chaotic valley may be a clue.", "source": "ScienceDaily" },
+      { "title": "NASA tests a powerful new thruster", "summary": "Space Daily says it could help missions to Mars.", "source": "ScienceDaily" },
+      { "title": "Webb reveals a scorching super-Earth", "summary": "A Mercury-like world looks unusually hot and close-in.", "source": "ScienceDaily" },
+      { "title": "Creatine may help muscle even without exercise", "summary": "A 12-week study found gains in middle-aged adults.", "source": "ScienceDaily" }
+    ],
+    "ai_frontier": [
+      { "title": "GPT-5.6 family splits into Sol, Terra and Luna", "summary": "Sol is the frontier tier, Terra cheaper, Luna fast.", "source": "ThursdAI" },
+      { "title": "Claude Opus 4.8 pushes agentic coding", "summary": "Anthropic reports gains on coding and reasoning benchmarks.", "source": "gpt.buzz" },
+      { "title": "Gemini 3.5 and Omni expand Google's stack", "summary": "Google adds multimodal and agentic capabilities.", "source": "gpt.buzz" },
+      { "title": "Grok 4.5 trains on Cursor agent traces", "summary": "SpaceXAI says it is optimized for coding workflows.", "source": "ThursdAI" }
+    ]
+  }
+}
