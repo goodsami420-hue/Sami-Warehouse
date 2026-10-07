@@ -343,63 +343,6 @@ function setupVideoForm() {
   document.getElementById('clear-archive').onclick = () => { if (!confirm('Clear entire completed archive?')) return; State.videos = State.videos.filter(v => !v.completed_status); persist(); renderVideos(); renderDashboard(); toast('Archive cleared', 'success'); };
 }
 
-function getTodayHabits() {
-  const today = todayKey();
-  return State.habits[today] || { meditation: false, calisthenics: false, sleep: false, score: 0 };
-}
-
-function recalcScore(h) {
-  let s = 0;
-  if (h.meditation) s++;
-  if (h.calisthenics) s++;
-  if (h.sleep) s++;
-  h.score = s;
-  return s;
-}
-
-function renderHabits() {
-  const h = getTodayHabits();
-  ['meditation', 'calisthenics', 'sleep'].forEach(k => {
-    const card = document.querySelector(`.habit-card[data-habit="${k}"]`);
-    const statusEl = document.getElementById('habit-status-' + k);
-    if (!card) return;
-    card.classList.toggle('done', !!h[k]);
-    statusEl.textContent = h[k] ? 'DONE ✓' : 'NOT DONE';
-  });
-  const score = recalcScore(h);
-  document.getElementById('habit-score-big').textContent = score;
-  const fill = document.getElementById('score-fill');
-  fill.style.width = (score / 3 * 100) + '%';
-  fill.textContent = score + ' / 3';
-  renderHabitHistory();
-}
-
-function renderHabitHistory() {
-  const el = document.getElementById('habit-history');
-  if (!el) return;
-  const days = [];
-  for (let i = 6; i >= 0; i--) {
-    const key = daysAgoKey(i);
-    const h = State.habits[key] || { meditation: false, calisthenics: false, sleep: false, score: 0 };
-    days.push({ date: key, ...h, isToday: i === 0 });
-  }
-  el.innerHTML = days.map(d => `<div class="history-cell ${d.isToday ? 'today' : ''} ${d.score === 3 ? 'full' : (d.score === 0 ? 'zero' : '')}"><div class="history-date">${fmtDate(d.date).split(' ')[0]}</div><div class="history-score">${d.score}</div><div class="history-dots"><div class="h-dot ${d.meditation ? 'on' : ''}"></div><div class="h-dot ${d.calisthenics ? 'on' : ''}"></div><div class="h-dot ${d.sleep ? 'on' : ''}"></div></div></div>`).join('');
-}
-
-function toggleHabit(kind) {
-  const today = todayKey();
-  if (!State.habits[today]) State.habits[today] = { meditation: false, calisthenics: false, sleep: false, score: 0 };
-  State.habits[today][kind] = !State.habits[today][kind];
-  recalcScore(State.habits[today]);
-  persist();
-  renderHabits();
-  renderDashboard();
-}
-
-function setupHabits() {
-  document.querySelectorAll('[data-toggle]').forEach(b => b.addEventListener('click', () => toggleHabit(b.dataset.toggle)));
-}
-
 function getTodayTasks(type) {
   const today = todayKey();
   const key = type === 'study' ? 'studyTasks' : type === 'physical' ? 'physicalTasks' : 'disciplineTasks';
@@ -575,10 +518,8 @@ function renderDashboard() {
     State.analytics.push(rec);
   }
   rec.completed_tasks_count = totalTasks;
-  rec.velocity_score = totalTasks + (getTodayHabits().score || 0) * 2;
+  rec.velocity_score = totalTasks;
   document.getElementById('summary-velocity').textContent = rec.velocity_score;
-  document.getElementById('ana-tasks-today').textContent = totalTasks;
-  document.getElementById('ana-velocity').textContent = rec.velocity_score;
   persist();
 }
 
@@ -654,153 +595,19 @@ function setupNews() {
   };
 }
 
-function logAnalyticsEvent(type) {
-  const today = todayKey();
-  let rec = State.analytics.find(a => a.date === today);
-  if (!rec) {
-    rec = { id: uid(), date: today, completed_tasks_count: 0, velocity_score: 0, hermes_report_text: '' };
-    State.analytics.push(rec);
-  }
-  rec.completed_tasks_count = (rec.completed_tasks_count || 0) + 1;
-  persist();
-}
-
-function computeStreak() {
-  let streak = 0;
-  const d = new Date();
-  while (true) {
-    const key = todayKey(d);
-    const h = State.habits[key];
-    if (!h || h.score === 0) {
-      if (streak === 0 && key === todayKey()) break;
-      else break;
-    }
-    streak++;
-    d.setDate(d.getDate() - 1);
-    if (streak > 365) break;
-  }
-  State.meta.streak = streak;
-}
-
-function renderAnalytics() {
-  const today = todayKey();
-  const todayRec = State.analytics.find(a => a.date === today);
-  document.getElementById('ana-tasks-today').textContent = todayRec?.completed_tasks_count || 0;
-  const last7 = [];
-  for (let i = 0; i < 7; i++) {
-    const key = daysAgoKey(i);
-    const r = State.analytics.find(a => a.date === key);
-    last7.push(r?.completed_tasks_count || 0);
-  }
-  const avg = (last7.reduce((s, x) => s + x, 0) / 7).toFixed(1);
-  document.getElementById('ana-tasks-7day').textContent = avg;
-  const velocity = todayRec?.velocity_score || 0;
-  document.getElementById('ana-velocity').textContent = velocity;
-  computeStreak();
-  document.getElementById('ana-streak').textContent = State.meta.streak;
-  const graphEl = document.getElementById('velocity-graph');
-  const maxV = Math.max(1, ...last7.map((_, i) => {
-    const key = daysAgoKey(6 - i);
-    const r = State.analytics.find(a => a.date === key);
-    return r?.velocity_score || 0;
-  }));
-  const days = ['D-6', 'D-5', 'D-4', 'D-3', 'D-2', 'D-1', 'TODAY'];
-  graphEl.innerHTML = last7.map((v, i) => {
-    const key = daysAgoKey(6 - i);
-    const r = State.analytics.find(a => a.date === key);
-    const vel = r?.velocity_score || 0;
-    const pct = Math.max(4, (vel / maxV) * 100);
-    const isToday = i === 6;
-    const isBest = vel === maxV && vel > 0;
-    return `<div class="v-bar-wrap"><div class="v-value">${vel}</div><div class="v-bar ${isToday ? 'today' : ''} ${isBest ? 'best' : ''}" style="height: ${pct}%"></div><div class="v-label">${days[i]}</div></div>`;
-  }).join('');
-  const reportsEl = document.getElementById('reports-list');
-  const reports = State.analytics.filter(a => a.hermes_report_text).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 10);
-  if (!reports.length) {
-    reportsEl.innerHTML = '<div class="empty-state">// no reports yet. click generate report.</div>';
-  } else {
-    reportsEl.innerHTML = reports.map(r => `<div class="report-item"><div class="report-head"><div class="report-date">${escapeHTML(r.date)}</div><div class="report-time">tasks: ${r.completed_tasks_count} &middot; velocity: ${r.velocity_score}</div></div><div class="report-body">${escapeHTML(r.hermes_report_text)}</div></div>`).join('');
-  }
-}
-
-function generateReport() {
-  const today = todayKey();
-  let rec = State.analytics.find(a => a.date === today);
-  if (!rec) {
-    rec = { id: uid(), date: today, completed_tasks_count: 0, velocity_score: 0, hermes_report_text: '' };
-    State.analytics.push(rec);
-  }
-  const h = State.habits[today] || { meditation: false, calisthenics: false, sleep: false, score: 0 };
-  const studyTasks = getTodayTasks('study');
-  const physicalTasks = getTodayTasks('physical');
-  const disciplineTasks = getTodayTasks('discipline');
-  const studyDone = studyTasks.filter(t => t.checked).length;
-  const physicalDone = physicalTasks.filter(t => t.checked).length;
-  const disciplineDone = disciplineTasks.filter(t => t.checked).length;
-  const totalTasks = studyDone + physicalDone + disciplineDone;
-  const queued = State.videos.filter(v => !v.completed_status).length;
-  const completed = State.videos.filter(v => v.completed_status).length;
-  const newsCount = State.news.length;
-  computeStreak();
-  rec.completed_tasks_count = totalTasks;
-  rec.velocity_score = totalTasks + (h.score || 0) * 2;
-  const lines = [`=== HERMES DAILY REPORT — ${today} ===`, ``, `TASKS COMPLETED: ${totalTasks}`, `VELOCITY SCORE: ${rec.velocity_score}`, `STREAK: ${State.meta.streak} days`, ``, `STUDY: ${studyDone}/${studyTasks.length} tasks`, `PHYSICAL: ${physicalDone}/${physicalTasks.length} workouts`, `DISCIPLINE: ${disciplineDone}/${disciplineTasks.length} habits`, ``, `HABITS:`, `  Meditation:  ${h.meditation ? '[X]' : '[ ]'}`, `  Calisthenics: ${h.calisthenics ? '[X]' : '[ ]'}`, `  Sleep:       ${h.sleep ? '[X]' : '[ ]'}`, `  Score: ${h.score} / 3`, ``, `VIDEO QUEUE: ${queued} pending, ${completed} completed.`, `NEWS ITEMS:  ${newsCount} this cycle.`, ``, `HERMES NOTE:`, `  ${generateHermesNote(h, rec, State.meta.streak)}`];
-  rec.hermes_report_text = lines.join('\n');
-  persist();
-  renderAnalytics();
-  renderDashboard();
-  toast('Report generated', 'success');
-}
-
-function generateHermesNote(h, rec, streak) {
-  const notes = [];
-  if (h.score === 3) notes.push('perfect habit day — carry this momentum');
-  else if (h.score === 0) notes.push('cold start. pick one habit and just start with that.');
-  else notes.push(`${h.score}/3 habits done — one more would tip you into solid territory.`);
-  if (rec.completed_tasks_count === 0) notes.push('no task completions logged today.');
-  else notes.push(`${rec.completed_tasks_count} task(s) completed — velocity building.`);
-  if (streak >= 7) notes.push(`streak is ${streak} days — do not break it.`);
-  else if (streak >= 3) notes.push(`streak ${streak} days — keep the chain.`);
-  return notes.join(' ');
-}
-
-function setupAnalytics() {
-  document.getElementById('gen-report-btn').onclick = generateReport;
-  document.getElementById('clear-reports').onclick = () => {
-    if (!confirm('Clear all hermes reports?')) return;
-    State.analytics.forEach(a => a.hermes_report_text = '');
-    persist();
-    renderAnalytics();
-    renderDashboard();
-    toast('Reports cleared', 'success');
-  };
-}
-
 function init() {
   setupClock();
   setupTabs();
   setupQuotes();
   setupVideoForm();
-  setupHabits();
   setupTrackers();
   initChart('studyChart', 'study', '#F59E0B');
   initChart('physicalChart', 'physical', '#10B981');
   initChart('disciplineChart', 'discipline', '#8B5CF6');
   setupNews();
-  setupAnalytics();
   const today = todayKey();
-  const h = State.habits[today];
-  if (h && h.score > 0) {
-    let rec = State.analytics.find(a => a.date === today);
-    if (rec) {
-      rec.velocity_score = (rec.completed_tasks_count || 0) + h.score * 2;
-      persist();
-    }
-  }
   renderVideos();
-  renderHabits();
   renderNews();
-  renderAnalytics();
   renderDashboard();
   updateStorageIndicator();
 }
