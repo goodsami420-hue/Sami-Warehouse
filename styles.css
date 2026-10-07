@@ -749,7 +749,231 @@ html, body {
   box-shadow: var(--shadow-none);
 }
 
-/* ==================== HABITS ==================== */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.video-card {
+  background: var(--bg-card);
+  border: var(--border);
+  box-shadow: var(--shadow-hard);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all var(--transition);
+}
+
+.video-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0px var(--ink);
+}
+
+.video-card.completed {
+  opacity: 0.75;
+}
+
+.video-thumb {
+  position: relative;
+  border: var(--border);
+  overflow: hidden;
+  background: var(--ink);
+  box-shadow: var(--shadow-soft);
+}
+
+.video-thumb img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.video-watch-btn {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.35);
+  color: var(--yellow);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-brutal);
+  font-size: 28px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--transition), background var(--transition);
+}
+
+.video-card:hover .video-watch-btn {
+  opacity: 1;
+}
+
+.video-watch-btn:hover {
+  background: rgba(15, 23, 42, 0.75);
+}
+
+.video-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.video-title {
+  font-family: var(--font-brutal);
+  font-weight: 900;
+  font-size: 14px;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+.video-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-muted);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.video-done-tag {
+  display: inline-flex;
+  margin-left: 8px;
+  padding: 2px 6px;
+  background: var(--green);
+  color: var(--bg-card);
+  font-family: var(--font-brutal);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.video-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.video-watch-toggle,
+.video-delete-btn {
+  flex: 1;
+  padding: 10px 12px;
+  border: var(--border-thin);
+  background: var(--bg-card);
+  color: var(--ink);
+  font-family: var(--font-brutal);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition);
+  box-shadow: var(--shadow-soft);
+}
+
+.video-watch-toggle:hover {
+  background: var(--green);
+  color: var(--bg-card);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px var(--ink);
+}
+
+.video-delete-btn:hover {
+  background: var(--red);
+  color: var(--bg-card);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px var(--ink);
+}
+
+.video-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.video-modal.open {
+  display: flex;
+}
+
+.video-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.78);
+}
+
+.video-modal-shell {
+  position: relative;
+  width: min(920px, 92vw);
+  background: var(--bg-card);
+  border: var(--border);
+  box-shadow: 10px 10px 0px var(--ink);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: width var(--transition), height var(--transition);
+}
+
+.video-modal-shell.expanded {
+  width: min(1240px, 96vw);
+}
+
+.video-modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: var(--border);
+  background: var(--ink);
+  color: var(--yellow);
+}
+
+.video-modal-title {
+  font-family: var(--font-brutal);
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.video-modal-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.video-modal-body {
+  background: #000;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-modal-frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 280px;
+}
+
+.video-modal-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+.video-modal-foot {
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
+  border-top: var(--border);
+}
 .habit-card {
   background: var(--bg-card);
   color: var(--ink);

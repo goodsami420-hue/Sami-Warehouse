@@ -155,13 +155,19 @@
     </div>
   </section>
   <section class="tab-panel" id="tab-videos">
-    <div class="panel-header"><h2 class="section-title section-title-video">VIDEO QUEUE</h2><div class="section-sub">// YOUTUBE URL &rarr; QUEUE &rarr; WATCH &rarr; MARK DONE</div></div>
-    <div class="content-card card-video"><form id="video-form" class="input-group"><input type="text" id="video-url" placeholder="https://youtube.com/watch?v=..." required><button type="submit" class="btn btn-primary-video">+ ADD TO QUEUE</button></form></div>
-    <div class="grid-2">
-      <div class="content-card card-video"><div class="card-head"><div class="card-title">CURRENT VIDEO</div></div><div id="video-player" class="video-player"><div class="empty-state">// select a queued video to watch.</div></div><div id="video-controls" class="video-controls"><button class="btn btn-primary-video" id="mark-complete-btn" disabled>&#10003; MARK COMPLETE</button><button class="btn btn-danger" id="delete-current-btn" disabled>&#10007; DELETE</button></div></div>
-      <div class="content-card card-video"><div class="card-head"><div class="card-title">QUEUE</div><div class="card-actions"><span class="count-badge" id="queue-count">0</span></div></div><div id="video-queue" class="queue-list"><div class="empty-state">// queue is empty. add a youtube url above.</div></div></div>
+    <div class="panel-header"><h2 class="section-title section-title-video">VIDEO QUEUE</h2><div class="section-sub">// YOUTUBE URL &rarr; THUMBNAIL &rarr; WATCH &rarr; TRACK</div></div>
+    <div class="content-card card-video">
+      <div class="card-head"><div class="card-title">ADD VIDEO</div></div>
+      <form id="video-form" class="input-group">
+        <input type="text" id="video-title" placeholder="Video title (optional)">
+        <input type="text" id="video-url" placeholder="https://youtube.com/watch?v=... or youtu.be/..." required>
+        <button type="submit" class="btn btn-primary-video">+ ADD VIDEO</button>
+      </form>
     </div>
-    <div class="content-card card-video"><div class="card-head"><div class="card-title">COMPLETED ARCHIVE</div><div class="card-actions"><button class="mini-btn" id="clear-archive">Clear</button></div></div><div id="video-archive" class="queue-list"><div class="empty-state">// no completed videos yet.</div></div></div>
+    <div class="content-card card-video">
+      <div class="card-head"><div class="card-title">QUEUE</div><div class="card-actions"><span class="count-badge" id="queue-count">0</span><button class="mini-btn" id="clear-archive">Clear</button></div></div>
+      <div id="video-queue" class="video-grid"><div class="empty-state">// queue is empty. add a youtube url above.</div></div>
+    </div>
   </section>
   <section class="tab-panel" id="tab-news">
     <div class="panel-header"><h2 class="section-title section-title-news">NEWS DIGEST</h2><div class="section-sub">// 4-CATEGORY DAILY UPDATE &amp; NIGHTLY AUDIT</div></div>
@@ -194,6 +200,25 @@
   </section>
 </main>
 <footer class="main-footer"><div class="footer-inner"><div class="footer-left"><span class="footer-brand">SAMI WAREHOUSE</span><span class="footer-dot">&middot;</span><span>v1.5</span><span class="footer-dot">&middot;</span><span>LOCAL STORAGE ENGINE</span></div><div class="footer-right"><span id="storage-status">STORE: OK</span><span class="footer-dot">&middot;</span><span id="storage-size">0 KB</span></div></div></footer>
+<div id="video-modal" class="video-modal" aria-hidden="true">
+  <div class="video-modal-backdrop"></div>
+  <div class="video-modal-shell">
+    <div class="video-modal-head">
+      <div class="video-modal-title" id="video-modal-title">VIDEO</div>
+      <div class="video-modal-actions">
+        <button class="mini-btn" id="video-size-toggle" type="button">EXPAND</button>
+        <button class="mini-btn" id="video-modal-close" type="button">CLOSE</button>
+      </div>
+    </div>
+    <div class="video-modal-body">
+      <div class="video-modal-frame" id="video-modal-frame"></div>
+    </div>
+    <div class="video-modal-foot">
+      <button class="btn btn-primary-video" id="video-mark-watched" type="button">MARK AS WATCHED</button>
+      <button class="btn btn-danger" id="video-delete-from-modal" type="button">DELETE VIDEO</button>
+    </div>
+  </div>
+</div>
 <div id="toast" class="toast"></div>
 <script src="app.js"></script>
 </body>

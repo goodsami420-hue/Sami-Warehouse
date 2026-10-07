@@ -370,67 +370,70 @@ async function fetchVideoTitle(videoId) {
 }
 
 function renderVideos() {
-  const queue = State.videos.filter(v => !v.completed_status);
-  const done = State.videos.filter(v => v.completed_status);
+  const queue = State.videos;
   const queueEl = document.getElementById('video-queue');
   const countEl = document.getElementById('queue-count');
   countEl.textContent = queue.length;
   if (!queue.length) {
     queueEl.innerHTML = '<div class="empty-state">// queue is empty. add a youtube url above.</div>';
-  } else {
-    queueEl.innerHTML = queue.map(v => `<div class="queue-item ${State.meta.activeVideoId === v.id ? 'active' : ''}" data-id="${v.id}"><div class="queue-thumb">&#9654;</div><div class="queue-info"><div class="queue-title">${escapeHTML(v.title || v.embed_id)}</div><div class="queue-meta">ID: ${v.embed_id} &middot; ${v.subject || 'unclassified'}</div></div><div class="queue-actions"><button class="queue-btn queue-watch" data-id="${v.id}">&#9654;</button><button class="queue-btn queue-done" data-id="${v.id}" title="Mark complete">&#10003;</button><button class="queue-btn queue-del" data-id="${v.id}" title="Delete">&#10007;</button></div></div>`).join('');
+    return;
   }
-  const archiveEl = document.getElementById('video-archive');
-  if (!done.length) {
-    archiveEl.innerHTML = '<div class="empty-state">// no completed videos yet.</div>';
-  } else {
-    archiveEl.innerHTML = done.map(v => `<div class="queue-item completed"><div class="queue-thumb">&#10003;</div><div class="queue-info"><div class="queue-title">${escapeHTML(v.title || v.embed_id)}</div><div class="queue-meta">completed &middot; ${escapeHTML(v.subject || '')}</div></div><div class="queue-actions"><button class="queue-btn queue-revert" data-id="${v.id}" title="Restore">&#8634;</button><button class="queue-btn queue-del" data-id="${v.id}" title="Delete">&#10007;</button></div></div>`).join('');
-  }
-  const playerEl = document.getElementById('video-player');
-  const markBtn = document.getElementById('mark-complete-btn');
-  const delBtn = document.getElementById('delete-current-btn');
-  if (State.meta.activeVideoId) {
-    const active = State.videos.find(v => v.id === State.meta.activeVideoId);
-    if (active) {
-      playerEl.innerHTML = `<iframe src="https://www.youtube.com/embed/${encodeURIComponent(active.embed_id)}?modestbranding=1&rel=0&disablekb=1&iv_load_policy=3&playsinline=1" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen title="${escapeHTML(active.title || 'video player')}"></iframe>`;
-      markBtn.disabled = !!active.completed_status;
-      delBtn.disabled = false;
-    } else {
-      State.meta.activeVideoId = null;
-      playerEl.innerHTML = '<div class="empty-state">// active video deleted. select from queue.</div>';
-      markBtn.disabled = true;
-      delBtn.disabled = true;
-    }
-  } else {
-    playerEl.innerHTML = '<div class="empty-state">// select a queued video to watch.</div>';
-    markBtn.disabled = true;
-    delBtn.disabled = true;
-  }
-  queueEl.querySelectorAll('.queue-watch, .queue-item').forEach(el => {
-    if (el.classList.contains('queue-item') && !el.classList.contains('completed')) {
-      el.addEventListener('click', e => {
-        if (e.target.closest('.queue-btn')) return;
-        State.meta.activeVideoId = el.dataset.id;
-        persist();
-        renderVideos();
-      });
-    }
-  });
-  queueEl.querySelectorAll('.queue-watch').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); State.meta.activeVideoId = b.dataset.id; persist(); renderVideos(); }));
-  queueEl.querySelectorAll('.queue-done').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); markVideoComplete(b.dataset.id); }));
-  queueEl.querySelectorAll('.queue-del').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); deleteVideo(b.dataset.id); }));
-  archiveEl.querySelectorAll('.queue-revert').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); revertVideo(b.dataset.id); }));
-  archiveEl.querySelectorAll('.queue-del').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); deleteVideo(b.dataset.id); }));
-  markBtn.onclick = () => markVideoComplete(State.meta.activeVideoId);
-  delBtn.onclick = () => deleteVideo(State.meta.activeVideoId);
+  queueEl.innerHTML = queue.map(v => `
+    <div class="video-card ${v.completed_status ? 'completed' : ''}" data-id="${v.id}">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/${encodeURIComponent(v.embed_id)}/hqdefault.jpg" alt="${escapeHTML(v.title || v.embed_id)} thumbnail" loading="lazy">
+        <button class="video-watch-btn" type="button" onclick="window.__openVideoById('${v.id}')" title="Open player">&#9654;</button>
+      </div>
+      <div class="video-info">
+        <div class="video-title">${escapeHTML(v.title || 'Untitled video')}</div>
+        <div class="video-meta">ID: ${escapeHTML(v.embed_id)} ${v.completed_status ? '<span class="video-done-tag">WATCHED</span>' : ''}</div>
+      </div>
+      <div class="video-actions">
+        <button class="video-watch-toggle" type="button" onclick="window.__toggleVideoWatchedById('${v.id}')" title="Mark as watched">${v.completed_status ? '&#10003;' : '&#9744;'}</button>
+        <button class="video-delete-btn" type="button" onclick="window.__deleteVideoById('${v.id}')" title="Delete">&#10007;</button>
+      </div>
+    </div>
+  `).join('');
 }
 
-async function addVideo(url, subject) {
+function openVideoModal(video) {
+  if (!video) return;
+  State.meta.activeVideoId = video.id;
+  persist();
+  document.getElementById('video-modal-title').textContent = video.title || video.embed_id;
+  document.getElementById('video-modal-frame').innerHTML = `<iframe src="https://www.youtube.com/embed/${encodeURIComponent(video.embed_id)}?modestbranding=1&rel=0&disablekb=1&iv_load_policy=3&playsinline=1" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen title="${escapeHTML(video.title || 'video player')}"></iframe>`;
+  const markBtn = document.getElementById('video-mark-watched');
+  const deleteBtn = document.getElementById('video-delete-from-modal');
+  markBtn.disabled = false;
+  deleteBtn.disabled = false;
+  markBtn.dataset.videoId = video.id;
+  deleteBtn.dataset.videoId = video.id;
+  markBtn.textContent = video.completed_status ? 'MARKED AS WATCHED' : 'MARK AS WATCHED';
+  const modal = document.getElementById('video-modal');
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+}
+
+function closeVideoModal() {
+  const modal = document.getElementById('video-modal');
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+  document.getElementById('video-modal-frame').innerHTML = '';
+}
+
+function toggleVideoSize() {
+  const shell = document.querySelector('#video-modal .video-modal-shell');
+  if (!shell) return;
+  shell.classList.toggle('expanded');
+  document.getElementById('video-size-toggle').textContent = shell.classList.contains('expanded') ? 'MEDIUM' : 'EXPAND';
+}
+
+async function addVideo(url, title) {
   const id = extractYouTubeId(url);
   if (!id) { toast('Invalid YouTube URL', 'error'); return; }
   if (State.videos.some(v => v.embed_id === id)) { toast('Already in warehouse', 'error'); return; }
-  const title = await fetchVideoTitle(id);
-  const rec = { id: uid(), embed_id: id, url: `https://www.youtube.com/watch?v=${id}`, title: title || `Video ${id}`, subject: subject || 'research', added_at: new Date().toISOString(), completed_status: false };
+  const fetchedTitle = await fetchVideoTitle(id);
+  const rec = { id: uid(), embed_id: id, url: `https://www.youtube.com/watch?v=${id}`, title: title || fetchedTitle || `Video ${id}`, subject: 'research', added_at: new Date().toISOString(), completed_status: false };
   State.videos.push(rec);
   State.meta.activeVideoId = rec.id;
   persist();
@@ -459,6 +462,16 @@ function revertVideo(id) {
   renderDashboard();
 }
 
+function toggleVideoWatched(id) {
+  const v = State.videos.find(x => x.id === id);
+  if (!v) return;
+  v.completed_status = !v.completed_status;
+  persist();
+  renderVideos();
+  renderDashboard();
+  toast(v.completed_status ? 'Marked as watched' : 'Marked as unwatched', 'success');
+}
+
 function deleteVideo(id) {
   State.videos = State.videos.filter(v => v.id !== id);
   if (State.meta.activeVideoId === id) State.meta.activeVideoId = null;
@@ -468,11 +481,46 @@ function deleteVideo(id) {
   toast('Deleted', 'success');
 }
 
+window.__openVideoById = id => openVideoModal(State.videos.find(x => x.id === id));
+window.__toggleVideoWatchedById = id => toggleVideoWatched(id);
+window.__deleteVideoById = id => deleteVideo(id);
+
 function setupVideoForm() {
   const form = document.getElementById('video-form');
   const input = document.getElementById('video-url');
-  form.addEventListener('submit', e => { e.preventDefault(); const url = input.value.trim(); if (!url) return; addVideo(url, 'research'); input.value = ''; });
-  document.getElementById('clear-archive').onclick = () => { if (!confirm('Clear entire completed archive?')) return; State.videos = State.videos.filter(v => !v.completed_status); persist(); renderVideos(); renderDashboard(); toast('Archive cleared', 'success'); };
+  const titleInput = document.getElementById('video-title');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const url = input.value.trim();
+    const title = titleInput ? titleInput.value.trim() : '';
+    if (!url) return;
+    addVideo(url, title || 'research');
+    input.value = '';
+    if (titleInput) titleInput.value = '';
+  });
+  document.getElementById('clear-archive').onclick = () => {
+    if (!confirm('Clear entire queue?')) return;
+    State.videos = [];
+    persist();
+    renderVideos();
+    renderDashboard();
+    toast('Queue cleared', 'success');
+  };
+  document.getElementById('video-modal-close').onclick = closeVideoModal;
+  document.getElementById('video-size-toggle').onclick = toggleVideoSize;
+  document.getElementById('video-mark-watched').onclick = () => {
+    const id = document.getElementById('video-mark-watched').dataset.videoId;
+    if (!id) return;
+    toggleVideoWatched(id);
+    const v = State.videos.find(x => x.id === id);
+    if (v) openVideoModal(v);
+  };
+  document.getElementById('video-delete-from-modal').onclick = () => {
+    const id = document.getElementById('video-delete-from-modal').dataset.videoId;
+    if (!id) return;
+    deleteVideo(id);
+    closeVideoModal();
+  };
 }
 
 function getTodayTasks(type) {
