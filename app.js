@@ -160,16 +160,24 @@ const QUOTES = [
 
 function setupQuotes() {
   const btn = document.getElementById('quote-next-btn');
-  if (!btn) return;
-  btn.addEventListener('click', () => {
-    State.quoteIndex = (State.quoteIndex + 1) % QUOTES.length;
-    renderQuote();
-  });
+  if (btn) {
+    btn.addEventListener('click', () => {
+      State.quoteIndex = (State.quoteIndex + 1) % QUOTES.length;
+      renderQuote();
+    });
+  }
+  State.quoteIndex = quoteIndexForToday();
   renderQuote();
-  setInterval(() => {
-    State.quoteIndex = (State.quoteIndex + 1) % QUOTES.length;
-    renderQuote();
-  }, 20000);
+}
+
+function quoteIndexForToday() {
+  const now = new Date();
+  const dateStr = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate();
+  let hash = 0;
+  for (let i = 0; i < dateStr.length; i++) {
+    hash = (hash * 31 + dateStr.charCodeAt(i)) >>> 0;
+  }
+  return hash % QUOTES.length;
 }
 
 function renderQuote() {
