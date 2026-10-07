@@ -347,13 +347,28 @@ function setupClock() {
 
 function extractYouTubeId(input) {
   if (!input) return null;
-  input = input.trim();
-  if (/^[a-zA-Z0-9_-]{11}$/.test(input)) return input;
-  const watch = input.match(/(?:youtube\.com|youtu\.be)\/(?:watch\?.*v=|embed\/|v\/|shorts\/)([a-zA-Z0-9_-]{11})/);
-  if (watch) return watch[1];
-  const param = input.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
-  if (param) return param[1];
-  return null;
+  const url = input.trim();
+  if (!url) return null;
+
+  // Accept raw 11-character IDs directly.
+  if (/^[a-zA-Z0-9_-]{11}$/.test(url)) return url;
+
+  // Robust matcher for the common YouTube URL families.
+  const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|shorts\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  const videoId = match && match[2];
+
+  if (!videoId || videoId.length !== 11) return null;
+
+  // Guard against malformed inputs and non-http schemes.
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return null;
+  } catch (_) {
+    return null;
+  }
+
+  return videoId;
 }
 
 async function fetchVideoTitle(videoId) {
@@ -430,16 +445,17 @@ function toggleVideoSize() {
 
 async function addVideo(url, title) {
   const id = extractYouTubeId(url);
-  if (!id) { toast('Invalid YouTube URL', 'error'); return; }
-  if (State.videos.some(v => v.embed_id === id)) { toast('Already in warehouse', 'error'); return; }
+  if (!id) { toast('Invalid YouTube URL', 'error'); return false; }
+  if (State.videos.some(v => v.embed_id === id)) { toast('Already in warehouse', 'error'); return false; }
   const fetchedTitle = await fetchVideoTitle(id);
-  const rec = { id: uid(), embed_id: id, url: `https://www.youtube.com/watch?v=${id}`, title: title || fetchedTitle || `Video ${id}`, subject: 'research', added_at: new Date().toISOString(), completed_status: false };
+  const rec = { id: uid(), embed_id: id, videoId: id, url: `https://www.youtube.com/watch?v=${id}`, title: title || fetchedTitle || `Video ${id}`, subject: 'research', added_at: new Date().toISOString(), completed_status: false, completed: false };
   State.videos.push(rec);
   State.meta.activeVideoId = rec.id;
   persist();
   renderVideos();
   renderDashboard();
   toast('Added to queue', 'success');
+  return true;
 }
 
 function markVideoComplete(id) {
@@ -489,14 +505,16 @@ function setupVideoForm() {
   const form = document.getElementById('video-form');
   const input = document.getElementById('video-url');
   const titleInput = document.getElementById('video-title');
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', async e => {
     e.preventDefault();
     const url = input.value.trim();
     const title = titleInput ? titleInput.value.trim() : '';
     if (!url) return;
-    addVideo(url, title || 'research');
-    input.value = '';
-    if (titleInput) titleInput.value = '';
+    const ok = await addVideo(url, title || 'research');
+    if (ok) {
+      input.value = '';
+      if (titleInput) titleInput.value = '';
+    }
   });
   document.getElementById('clear-archive').onclick = () => {
     if (!confirm('Clear entire queue?')) return;
