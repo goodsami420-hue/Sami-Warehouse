@@ -1,0 +1,24 @@
+name: Hermes Daily Intelligence Cron
+on:
+  schedule:
+    - cron: '0 18 * * *' # Runs daily at 12:00 AM Bangladesh Time (18:00 UTC)
+  workflow_dispatch:
+
+jobs:
+  daily-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Run Auto-Update Script
+        run: |
+          node scripts/update-intelligence.js
+
+      - name: Commit and Push Changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "Automated Daily Intelligence & News Feed Sync [cron]"
+          git push --force origin HEAD:main
