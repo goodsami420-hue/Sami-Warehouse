@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAMI WAREHOUSE — Personal Command Center</title>
+<!-- deploy-bump: 2026-10-07 V1.6-REFRESH -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=1.6-REFRESH">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FACC15' stroke='%230f172a' stroke-width='8'/><text x='50' y='72' font-size='56' font-weight='900' text-anchor='middle' font-family='Arial Black' fill='%23000'>S</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="grain-overlay"></div>
+<header class="hero-header">
+  <div class="header-inner">
+    <div class="logo-block">
+      <div class="logo-mark">SW</div>
+      <div class="logo-text">
+        <h1 class="logo-title">SAMI<br>WAREHOUSE</h1>
+        <div class="logo-sub">Personal Command Center v1.5</div>
+      </div>
+    </div>
+    <div class="header-meta">
+      <div class="badge badge-accent" id="focus-badge"><span class="badge-dot"></span>ZERO-DISTRACTION FOCUS MODE</div>
+      <div class="badge">OPERATOR: SAMI</div>
+      <div class="badge"><span id="clock">--:--:--</span></div>
+      <div class="badge" id="date-badge">— — —</div>
+    </div>
+  </div>
+</header>
+<nav class="main-nav">
+  <button class="nav-btn active" data-tab="dashboard"><span class="nav-num">01</span> DASHBOARD</button>
+  <button class="nav-btn" data-tab="study-log"><span class="nav-num">02</span> STUDY LOG</button>
+  <button class="nav-btn" data-tab="physical-log"><span class="nav-num">03</span> PHYSICAL LOG</button>
+  <button class="nav-btn" data-tab="discipline-log"><span class="nav-num">04</span> DISCIPLINE LOG</button>
+  <button class="nav-btn" data-tab="videos"><span class="nav-num">05</span> VIDEO QUEUE</button>
+  <button class="nav-btn" data-tab="news"><span class="nav-num">06</span> NEWS</button>
+</nav>
+<main class="main-content">
+  <section class="tab-panel active" id="tab-dashboard">
+    <div class="panel-header">
+      <h2 class="section-title section-title-dashboard">DASHBOARD</h2>
+      <div class="section-sub">// LIVE MOMENTUM & TREND CONTROL</div>
+    </div>
+    <div class="quote-banner" id="quote-banner">
+      <div class="quote-content">
+        <div class="quote-icon">&#9733;</div>
+        <div class="quote-text">
+          <div class="quote-main" id="quote-main">"Discipline is choosing between what you want now and what you want most."</div>
+          <div class="quote-author" id="quote-author">— Abraham Lincoln</div>
+        </div>
+      </div>
+      <button class="btn btn-ghost quote-next-btn" id="quote-next-btn">NEXT &#8594;</button>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card chart-card-study">
+        <div class="card-head"><div class="card-title card-title-study">STUDY MOMENTUM</div><div class="chart-status" id="study-momentum-status">FLAT</div></div>
+        <div class="chart-summary">
+          <div class="chart-metric"><span class="metric-label">TODAY</span><span class="metric-value" id="study-momentum-today">0%</span></div>
+          <div class="chart-metric"><span class="metric-label">TREND</span><span class="metric-value" id="study-momentum-trend">0</span></div>
+        </div>
+        <div class="chart-container"><canvas id="studyChart"></canvas></div>
+      </div>
+      <div class="chart-card chart-card-physical">
+        <div class="card-head"><div class="card-title card-title-physical">PHYSICAL PERFORMANCE</div><div class="chart-status" id="physical-momentum-status">FLAT</div></div>
+        <div class="chart-summary">
+          <div class="chart-metric"><span class="metric-label">TODAY</span><span class="metric-value" id="physical-momentum-today">0%</span></div>
+          <div class="chart-metric"><span class="metric-label">TREND</span><span class="metric-value" id="physical-momentum-trend">0</span></div>
+        </div>
+        <div class="chart-container"><canvas id="physicalChart"></canvas></div>
+      </div>
+      <div class="chart-card chart-card-discipline">
+        <div class="card-head"><div class="card-title card-title-discipline">DISCIPLINE CONSISTENCY</div><div class="chart-status" id="discipline-momentum-status">FLAT</div></div>
+        <div class="chart-summary">
+          <div class="chart-metric"><span class="metric-label">TODAY</span><span class="metric-value" id="discipline-momentum-today">0%</span></div>
+          <div class="chart-metric"><span class="metric-label">TREND</span><span class="metric-value" id="discipline-momentum-trend">0</span></div>
+        </div>
+        <div class="chart-container"><canvas id="disciplineChart"></canvas></div>
+      </div>
+    </div>
+    <div class="summary-grid">
+      <div class="summary-card"><div class="summary-label">ACTIVE STUDY TASKS</div><div class="summary-value" id="summary-study-open">0</div><div class="summary-foot">pending in study log</div></div>
+      <div class="summary-card"><div class="summary-label">ACTIVE WORKOUTS</div><div class="summary-value" id="summary-physical-open">0</div><div class="summary-foot">pending in physical log</div></div>
+      <div class="summary-card"><div class="summary-label">ACTIVE DISCIPLINE HABITS</div><div class="summary-value" id="summary-discipline-open">0</div><div class="summary-foot">pending in discipline log</div></div>
+      <div class="summary-card"><div class="summary-label">VELOCITY SCORE</div><div class="summary-value" id="summary-velocity">0</div><div class="summary-foot">today</div></div>
+    </div>
+    <div class="quick-actions">
+      <button class="btn btn-primary-study" data-jump="study-log">OPEN STUDY LOG</button>
+      <button class="btn btn-primary-physical" data-jump="physical-log">OPEN PHYSICAL LOG</button>
+      <button class="btn btn-primary-discipline" data-jump="discipline-log">OPEN DISCIPLINE LOG</button>
+    </div>
+    <div class="intel-zone" id="intel-zone">
+      <div class="intel-card intel-card-wired" id="wired-knowledge-box">
+        <div class="card-head">
+          <div class="card-title card-title-wired">WIRED KNOWLEDGE BOX</div>
+          <span class="card-badge" id="wired-badge">DAILY FACT</span>
+        </div>
+        <div class="intel-body">
+          <div class="intel-title" id="wired-title">—</div>
+          <div class="intel-summary" id="wired-summary">—</div>
+          <div class="intel-source" id="wired-source">—</div>
+        </div>
+      </div>
+      <div class="intel-card intel-card-spaced" id="vocabulary-box">
+        <div class="card-head">
+          <div class="card-title card-title-spaced">SPACED REPETITION ENGINE</div>
+          <span class="card-badge" id="spaced-badge">1-3-7 DAY CYCLE</span>
+        </div>
+        <div class="intel-body">
+          <div class="spaced-grid">
+            <div class="spaced-block">
+              <div class="spaced-label">VOCABULARY</div>
+              <div class="vocab-list" id="vocab-list"></div>
+            </div>
+            <div class="spaced-block">
+              <div class="spaced-label">SPEAKING GRAMMAR RULE</div>
+              <div class="grammar-box" id="grammar-box">
+                <div class="grammar-title" id="grammar-title">—</div>
+                <div class="grammar-formula" id="grammar-formula">—</div>
+                <div class="grammar-examples" id="grammar-examples"></div>
+              </div>
+              <div class="cycle-state" id="cycle-state">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="tab-panel" id="tab-study-log">
+    <div class="panel-header"><h2 class="section-title section-title-study">STUDY LOG</h2><div class="section-sub">// ADD STUDY TARGETS & CHECK OFF COMPLETION</div></div>
+    <div class="log-card log-card-study">
+      <div class="card-head"><div class="card-title card-title-study">DAILY STUDY INPUT</div><div class="card-actions"><span class="count-badge" id="study-open-count">0 OPEN</span><button class="btn btn-primary-study" id="add-study-btn">+ ADD STUDY TARGET</button></div></div>
+      <div class="tracker-input-container"><input type="text" id="study-task-input" placeholder="e.g., Physics Chapter 4 CQ, Chemistry MCQs, Bangla 2nd Paper Model Test"></div>
+      <div class="tracker-list" id="study-task-list"><div class="empty-state">// add study targets to track progress.</div></div>
+    </div>
+  </section>
+  <section class="tab-panel" id="tab-physical-log">
+    <div class="panel-header"><h2 class="section-title section-title-physical">PHYSICAL LOG</h2><div class="section-sub">// ADD WORKOUT ROUTINES & TRACK EXECUTION</div></div>
+    <div class="log-card log-card-physical">
+      <div class="card-head"><div class="card-title card-title-physical">DAILY PHYSICAL INPUT</div><div class="card-actions"><span class="count-badge" id="physical-open-count">0 OPEN</span><button class="btn btn-primary-physical" id="add-physical-btn">+ ADD WORKOUT</button></div></div>
+      <div class="tracker-input-container"><input type="text" id="physical-workout-input" placeholder="e.g., Pushups, Planks, Calisthenics Routine"></div>
+      <div class="tracker-list" id="physical-task-list"><div class="empty-state">// add workouts to track progress.</div></div>
+    </div>
+  </section>
+  <section class="tab-panel" id="tab-discipline-log">
+    <div class="panel-header"><h2 class="section-title section-title-discipline">DISCIPLINE LOG</h2><div class="section-sub">// TRACK CORE DAILY DISCIPLINE HABITS</div></div>
+    <div class="log-card log-card-discipline">
+      <div class="card-head"><div class="card-title card-title-discipline">DAILY DISCIPLINE INPUT</div><div class="card-actions"><span class="count-badge" id="discipline-open-count">0 OPEN</span><button class="btn btn-primary-discipline" id="add-discipline-btn">+ ADD HABIT</button></div></div>
+      <div class="tracker-input-container"><input type="text" id="discipline-habit-input" placeholder="e.g., Fajr Prayer, On-time Sleep, Screen Lock, Focus Mode"></div>
+      <div class="tracker-list" id="discipline-task-list"><div class="empty-state">// add discipline habits to track progress.</div></div>
+    </div>
+  </section>
+  <section class="tab-panel" id="tab-videos">
+    <div class="panel-header"><h2 class="section-title section-title-video">VIDEO QUEUE</h2><div class="section-sub">// YOUTUBE URL &rarr; THUMBNAIL &rarr; WATCH &rarr; TRACK</div></div>
+    <div class="content-card card-video">
+      <div class="card-head"><div class="card-title">ADD VIDEO</div></div>
+      <form id="video-form" class="input-group">
+        <input type="text" id="video-title" placeholder="Video title (optional)">
+        <input type="text" id="video-url" placeholder="https://youtube.com/watch?v=... or youtu.be/..." required>
+        <button type="submit" class="btn btn-primary-video">+ ADD VIDEO</button>
+      </form>
+    </div>
+    <div class="content-card card-video">
+      <div class="card-head"><div class="card-title">QUEUE</div><div class="card-actions"><span class="count-badge" id="queue-count">0</span><button class="mini-btn" id="clear-archive">Clear</button></div></div>
+      <div id="video-queue" class="video-grid"><div class="empty-state">// queue is empty. add a youtube url above.</div></div>
+    </div>
+  </section>
+  <section class="tab-panel" id="tab-news">
+    <div class="panel-header"><h2 class="section-title section-title-news">NEWS DIGEST</h2><div class="section-sub">// 4-CATEGORY DAILY UPDATE &amp; NIGHTLY AUDIT</div></div>
+    <div class="content-card card-news">
+      <div class="card-head"><div class="card-title">CYCLE CONTROLS</div><div class="card-actions"><button class="btn btn-primary-news" id="run-audit-btn">RUN NIGHTLY AUDIT</button><button class="btn btn-danger" id="clear-news">CLEAR CYCLE</button></div></div>
+      <div class="audit-meta">
+        <div class="meta-line"><span class="meta-label">LAST AUDIT:</span> <span id="last-audit-time">never</span></div>
+        <div class="meta-line"><span class="meta-label">SOURCES:</span> arXiv &middot; local curated feed &middot; model briefs</div>
+        <div class="meta-line"><span class="meta-label">STATUS:</span> <span id="audit-status">IDLE</span></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="content-card card-news news-card news-card-national">
+        <div class="card-head"><div class="card-title">NATIONAL NEWS</div><div class="card-actions"><span class="count-badge" id="news-count-national">0</span></div></div>
+        <div id="news-national" class="news-list"></div>
+      </div>
+      <div class="content-card card-news news-card news-card-global">
+        <div class="card-head"><div class="card-title">GLOBAL NEWS</div><div class="card-actions"><span class="count-badge" id="news-count-global">0</span></div></div>
+        <div id="news-global" class="news-list"></div>
+      </div>
+      <div class="content-card card-news news-card news-card-innovation">
+        <div class="card-head"><div class="card-title">INNOVATION & ACADEMIC RESEARCH</div><div class="card-actions"><span class="count-badge" id="news-count-innovation">0</span></div></div>
+        <div id="news-innovation" class="news-list"></div>
+      </div>
+      <div class="content-card card-news news-card news-card-ai">
+        <div class="card-head"><div class="card-title">AI FRONTIER</div><div class="card-actions"><span class="count-badge" id="news-count-ai">0</span></div></div>
+        <div id="news-ai" class="news-list"></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="main-footer"><div class="footer-inner"><div class="footer-left"><span class="footer-brand">SAMI WAREHOUSE</span><span class="footer-dot">&middot;</span><span>v1.5</span><span class="footer-dot">&middot;</span><span>LOCAL STORAGE ENGINE</span></div><div class="footer-right"><span id="storage-status">STORE: OK</span><span class="footer-dot">&middot;</span><span id="storage-size">0 KB</span></div></div></footer>
+<div id="video-modal" class="video-modal" aria-hidden="true">
+  <div class="video-modal-backdrop"></div>
+  <div class="video-modal-shell">
+    <div class="video-modal-head">
+      <div class="video-modal-title" id="video-modal-title">VIDEO</div>
+      <div class="video-modal-actions">
+        <button class="mini-btn" id="video-size-toggle" type="button">EXPAND</button>
+        <button class="mini-btn" id="video-modal-close" type="button">CLOSE</button>
+      </div>
+    </div>
+    <div class="video-modal-body">
+      <div class="video-modal-frame" id="video-modal-frame"></div>
+    </div>
+    <div class="video-modal-foot">
+      <button class="btn btn-primary-video" id="video-mark-watched" type="button">MARK AS WATCHED</button>
+      <button class="btn btn-danger" id="video-delete-from-modal" type="button">DELETE VIDEO</button>
+    </div>
+  </div>
+</div>
+<div id="toast" class="toast"></div>
+<script src="app.js?v=1.6-REFRESH"></script>
+</body>
+</html>
