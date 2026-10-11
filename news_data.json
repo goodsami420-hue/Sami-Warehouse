@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-07",
+  "updated_at": "2026-10-11",
   "wired_fact": {
     "title": "The Moon’s far side never lets Earth light it up",
     "summary": "The Moon keeps the same face turned toward Earth, so the far side stays hidden from direct sunlight as we see it from home. That stable alignment means the same near-side terrain is familiar to everyone on Earth, while the opposite hemisphere remains almost always outside our line of sight. It is not a secret surface with secret weather or hidden day and night cycles; it is simply the half that faces away. That is why lunar missions and probes matter so much: they let us observe the far side directly, turning a permanent blind spot into a window onto a different view of the sky.",
@@ -29,7 +29,7 @@
           "title": "Expressing Past Habits - Used to",
           "formula": "Subject + used to + Base Verb",
           "examples": [
-            { "en": "I used to read every morning before school.", "bn": "আমি প্রতিন্দিন স্কুলের আগের পড়ে তোমি।" },
+            { "en": "I used to read every morning before school.", "bn": "আমি প্রতিদিন স্কুলের আগে পড়তাম।" },
             { "en": "He used to play cricket with his cousins.", "bn": "সে দাদা-চাচাদের সাথে ক্রিকেট খেলত।" }
           ]
         }
