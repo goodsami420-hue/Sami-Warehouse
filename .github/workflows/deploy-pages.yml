@@ -26,6 +26,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: site
-          path: public
+          path: .
       - name: Deploy to Pages
         uses: actions/deploy-pages@v4
